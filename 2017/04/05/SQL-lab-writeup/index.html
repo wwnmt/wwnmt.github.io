@@ -75,7 +75,7 @@
     </p>
   <p class="article-time">
     <time datetime="2017-04-05T06:46:12.000Z" itemprop="datePublished">2017-04-05</time>
-    Updated:<time datetime="2017-04-07T07:59:42.314Z" itemprop="dateModified">2017-04-07</time>
+    Updated:<time datetime="2017-04-07T08:02:00.395Z" itemprop="dateModified">2017-04-07</time>
     
   </p>
 </header>
@@ -102,7 +102,7 @@
 <p>另外，为了更好的学习SQL，在每个less的源码文件中加上<code>echo &quot;SQL:&quot;.$sql.&quot;&lt;br /&gt;&quot;;</code></p>
 </blockquote>
 <h4 id="Less-1-GET-Error-based-Single-quotes-String"><a href="#Less-1-GET-Error-based-Single-quotes-String" class="headerlink" title="Less-1 GET - Error based - Single quotes - String"></a>Less-1 GET - Error based - Single quotes - String</h4><p>根据题目，这是一个基于错误回显的单引号string注入，首先在url中加上单引号（注意是英文字符的单引号’或%27）<br><img src="http://i.imgur.com/XVFGfh6.png" alt=""></p>
-<p>MySQL数据库回显了“MySQL server version for the right syntax to use near ‘’1’’ LIMIT 0,1’ at line 1”，单引号不匹配嘛，这说明less-1没做任何过滤，只要在加上一个#或者%23，错误就消失了，因为后面多余的引号被注释掉了。接下来继续完成对user表的注入</p>
+<p>MySQL数据库回显了“MySQL server version for the right syntax to use near ‘’1’’ LIMIT 0,1’ at line 1”，单引号不匹配嘛，这说明less-1没做任何过滤，只要在加上一个#或者%23，错误就消失了，因为后面多余的引号被注释掉了。</p>
 <h5 id="猜表中字段数"><a href="#猜表中字段数" class="headerlink" title="猜表中字段数"></a>猜表中字段数</h5><p>select 1 表示选中第一个字段，以此类推select 1,2,3表示选择前三个字段，所以就猜吧。字段数不同时报错，如果猜中就正常返回。也可以使用order by测试。<br><img src="http://i.imgur.com/3ZTsDBb.png" alt=""><br><img src="http://i.imgur.com/CsypE1v.png" alt=""></p>
 <p>答案就是三列，根据显示的name和password来看，应该是2,3列，第一列一般是用户id，所以未来的注入语句可以构造成<code>SELECT * FROM users WHERE id=&#39;1&#39; union select 1,2,注入语句#&#39; LIMIT 0,1</code>或<code>SELECT * FROM users WHERE id=&#39;1&#39; union select 1,注入语句,3#&#39; LIMIT 0,1</code>当然是放在后面比较方便</p>
 <h5 id="获取当前数据库信息、用户信息"><a href="#获取当前数据库信息、用户信息" class="headerlink" title="获取当前数据库信息、用户信息"></a>获取当前数据库信息、用户信息</h5><p>单独使用database(),user()很麻烦，使用concat_ws()将其连接起来，concat_ws(char(58),database(),user())<br><img src="http://i.imgur.com/j4dmKSo.png" alt=""></p>
