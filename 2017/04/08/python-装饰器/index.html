@@ -74,7 +74,7 @@
     </p>
   <p class="article-time">
     <time datetime="2017-04-08T07:59:57.000Z" itemprop="datePublished">2017-04-08</time>
-    更新日期:<time datetime="2017-04-09T08:02:33.569Z" itemprop="dateModified">2017-04-09</time>
+    更新日期:<time datetime="2017-04-09T08:04:23.094Z" itemprop="dateModified">2017-04-09</time>
     
   </p>
 </header>
@@ -88,6 +88,7 @@
 		
 		<h1 id="python装饰器篇"><a href="#python装饰器篇" class="headerlink" title="python装饰器篇"></a>python装饰器篇</h1><p>python装饰器是一个用于封装函数或功能代码的工具。可以为函数增添功能，节省重复代码量，通过传入的调用函数来返回一个新的函数调用。那么装饰器和函数有什么区别呢？能不能应用到类呢？</p>
 <h3 id="装饰器语法"><a href="#装饰器语法" class="headerlink" title="装饰器语法"></a>装饰器语法</h3><p>下面是一个简单的装饰器，确保函数接收的参数都是整型：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">def requ_ints(func):</div><div class="line">	def inner(*args, **kw):</div><div class="line">		kwarg = [i for i in kw.values()]</div><div class="line">		for arg in list(args) + kwarg:</div><div class="line">			if not isinstance(arg, int):</div><div class="line">				raise TypeError(&apos;%s only accepts int as arguments&apos; % func.__name__)</div><div class="line">		return func(*args, **kw)</div><div class="line">	return inner</div><div class="line">	</div><div class="line">@reau_ints</div><div class="line">def add(x, y):</div><div class="line">	&apos;&apos;&apos;return sum of x and y&apos;&apos;&apos;</div><div class="line">	return x + y</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">int i = 0; i = 1; </div><div class="line">for (int i = 0; i &lt; 100; i++)</div><div class="line">&#123;</div><div class="line">      printf(&quot;hello markdown!\n&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
   
 	</div>
 		<footer class="article-footer clearfix">
