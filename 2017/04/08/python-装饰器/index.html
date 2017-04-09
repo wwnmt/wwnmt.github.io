@@ -4,10 +4,14 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>python 装饰器 | wWn&#39;s blog</title>
+    <title>python 函数工具 | wWn&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Weinan Wu">
+    
+    <meta name="description" content="python装饰器篇python装饰器是一个用于封装函数或功能代码的工具。可以为函数增添功能，节省重复代码量，通过传入的调用函数来返回一个新的函数调用。那么装饰器和函数有什么区别呢？能不能应用到类呢？
+装饰器语法下面是一个简单的装饰器，确保函数接收的参数都是整型：
+`def requ_ints(fu">
     
     
     
@@ -63,7 +67,7 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/04/08/python-装饰器/" title="python 装饰器" itemprop="url">python 装饰器</a>
+      <a href="/2017/04/08/python-装饰器/" title="python 函数工具" itemprop="url">python 函数工具</a>
   </h1>
   <p class="article-author">By
     
@@ -71,7 +75,7 @@
     </p>
   <p class="article-time">
     <time datetime="2017-04-08T07:59:57.000Z" itemprop="datePublished">2017-04-08</time>
-    更新日期:<time datetime="2017-04-08T08:00:18.323Z" itemprop="dateModified">2017-04-08</time>
+    更新日期:<time datetime="2017-04-09T07:52:23.298Z" itemprop="dateModified">2017-04-09</time>
     
   </p>
 </header>
@@ -80,10 +84,24 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#python装饰器篇"><span class="toc-number">1.</span> <span class="toc-text">python装饰器篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#装饰器语法"><span class="toc-number">1.0.1.</span> <span class="toc-text">装饰器语法</span></a></li></ol></li></ol></li></ol>
 		</div>
 		
-		  
+		<h1 id="python装饰器篇"><a href="#python装饰器篇" class="headerlink" title="python装饰器篇"></a>python装饰器篇</h1><p>python装饰器是一个用于封装函数或功能代码的工具。可以为函数增添功能，节省重复代码量，通过传入的调用函数来返回一个新的函数调用。那么装饰器和函数有什么区别呢？能不能应用到类呢？</p>
+<h3 id="装饰器语法"><a href="#装饰器语法" class="headerlink" title="装饰器语法"></a>装饰器语法</h3><p>下面是一个简单的装饰器，确保函数接收的参数都是整型：</p>
+<pre><code>`def requ_ints(func):
+    def inner(*args, **kw):
+        kwarg = [i for i in kw.values()]
+        for arg in list(args) + kwarg:
+            if not isinstance(arg, int):
+                raise TypeError(&apos;%s only accepts int as arguments&apos; % func.__name__)
+        return func(*args, **kw)
+    return inner
+
+@reau_ints
+def add(x, y):
+    &apos;&apos;&apos;return sum of x and y&apos;&apos;&apos;
+</code></pre>  
 	</div>
 		<footer class="article-footer clearfix">
 
@@ -97,7 +115,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://www.wuweinan.top/2017/04/08/python-装饰器/" data-title="python 装饰器 | wWn&#39;s blog" data-tsina="null" class="share clearfix">
+  <div data-url="http://www.wuweinan.top/2017/04/08/python-装饰器/" data-title="python 函数工具 | wWn&#39;s blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -123,7 +141,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#python装饰器篇"><span class="toc-number">1.</span> <span class="toc-text">python装饰器篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#装饰器语法"><span class="toc-number">1.0.1.</span> <span class="toc-text">装饰器语法</span></a></li></ol></li></ol></li></ol>
   </div>
 
 <div id="asidepart">
