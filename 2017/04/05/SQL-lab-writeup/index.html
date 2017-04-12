@@ -75,7 +75,7 @@
     </p>
   <p class="article-time">
     <time datetime="2017-04-05T06:46:12.000Z" itemprop="datePublished">2017-04-05</time>
-    更新日期:<time datetime="2017-04-12T11:52:24.140Z" itemprop="dateModified">2017-04-12</time>
+    更新日期:<time datetime="2017-04-12T11:53:47.749Z" itemprop="dateModified">2017-04-12</time>
     
   </p>
 </header>
@@ -124,7 +124,7 @@
 <p>另外，如此简单的一句话，进行注入的原理就是研究人员发现，在聚合函数后使用分组语句ORDER BY，会把查询的一部分以错误的形式打印出来，因此无论源码是否只打印’you are in…’，都可以看到想看到的东西了。</p>
 <p>最后附上url:<br>?id=-1’ union select 1,count(<em>),concat((select username from users where id=3),floor(rand()</em>2))as a from users group by a%23<br><img src="http://i.imgur.com/Mr44Nca.png" alt=""><br><img src="http://i.imgur.com/gjOqGsU.png" alt=""></p>
 <h4 id="Less-6-GET-Double-Injection-Double-Quotes-String"><a href="#Less-6-GET-Double-Injection-Double-Quotes-String" class="headerlink" title="Less-6 GET - Double Injection - Double Quotes - String"></a>Less-6 GET - Double Injection - Double Quotes - String</h4><p>less-6和less-5的区别就是Double or Single Quotes。如果不打印出SQL语句的话，使用单引号’?id=1’来测试是不会出错的，因为双引号可以把单引号括进去，这时候需要单双引号混合使用，根据显示的语法错误信息判断。<br><img src="http://i.imgur.com/C5pMNGc.png" alt=""><br>剩下的注入部分和less-5的一模一样所以来重点讲一下count(*)这个聚合函数为什么和group在一起会产生这样的化学反应吧。把语句放在mysql中多次测试可以得到下面的结果:<br><img src="http://i.imgur.com/IBgmyYW.png" alt=""></p>
-<p>count统计的数量是被group by分组以后的每一组数据的数量而不是分组数量，这里floor()的作用就体现出来了,出错的原因等明天问一下数据库老师吧= =<br>最后上url:?id=-1%22union%20select%201,count(<em>),concat((select%20username%20from%20users%20where%20id=1),floor(rand()</em>2))as<br>%20a%20from%20users%20group%20by%20a%23</p>
+<p>count统计的数量是被group by分组以后的每一组数据的数量而不是分组数量，这里floor()的作用就体现出来了,出错的原因等明天问一下数据库老师吧= =最后上url:?id=-1%22union%20select%201,count(<em>),concat((select%20username%20from%20users%20where%20id=1),floor(rand()</em>2))as<br>%20a%20from%20users%20group%20by%20a%23</p>
 <p><img src="http://i.imgur.com/yzye0ue.png" alt=""><br><img src="http://i.imgur.com/5RWy7GA.png" alt=""></p>
   
 	</div>
@@ -187,6 +187,8 @@
 <div class="tagslist">
 	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
+		
+			<li><a href="/tags/pwn/" title="pwn">pwn<sup>1</sup></a></li>
 		
 			<li><a href="/tags/python/" title="python">python<sup>1</sup></a></li>
 		
