@@ -9,8 +9,8 @@
     
     <meta name="author" content="Weinan Wu">
     
-    <meta name="description" content="1.fd连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码只要把fd设置为0，即便准输入文件的文件描述符，然后读入的内容和”LETMEWIN\n”相同就可得到flag
-2.collision依旧是三个文件，源代码如下:需要输入20byte的passcode，在经过check_pa">
+    <meta name="description" content="fd连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码只要把fd设置为0，即便准输入文件的文件描述符，然后读入的内容和”LETMEWIN\n”相同就可得到flag
+collision依旧是三个文件，源代码如下:需要输入20byte的passcode，在经过check_passwo">
     
     
     
@@ -74,7 +74,7 @@
     </p>
   <p class="article-time">
     <time datetime="2017-04-11T05:56:15.000Z" itemprop="datePublished">2017-04-11</time>
-    更新日期:<time datetime="2017-04-12T13:30:37.171Z" itemprop="dateModified">2017-04-12</time>
+    更新日期:<time datetime="2017-04-12T13:31:40.931Z" itemprop="dateModified">2017-04-12</time>
     
   </p>
 </header>
@@ -83,11 +83,11 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-fd"><span class="toc-number">1.</span> <span class="toc-text">1.fd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-collision"><span class="toc-number">2.</span> <span class="toc-text">2.collision</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fd"><span class="toc-number">1.</span> <span class="toc-text">fd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#collision"><span class="toc-number">2.</span> <span class="toc-text">collision</span></a></li></ol>
 		</div>
 		
-		<h2 id="1-fd"><a href="#1-fd" class="headerlink" title="1.fd"></a>1.fd</h2><p>连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码<br><img src="http://i.imgur.com/1VMtzNG.png" alt=""><br>只要把fd设置为0，即便准输入文件的文件描述符，然后读入的内容和”LETMEWIN\n”相同就可得到flag</p>
-<h2 id="2-collision"><a href="#2-collision" class="headerlink" title="2.collision"></a>2.collision</h2><p>依旧是三个文件，源代码如下:<br><img src="http://i.imgur.com/olGTLwG.png" alt=""><br>需要输入20byte的passcode，在经过check_password()函数处理后，和hashcode’0x21DD09EC’相等，就可以获得flag。check_password()把passcode类型转化为int后，分为5组相加等于0x21DD09EC。所以干脆把0x21DD09EC分成5份，最好就是4个0x0101和一个0x1DD905E8。使用perl或者python可以简化输入过程。</p>
+		<h2 id="fd"><a href="#fd" class="headerlink" title="fd"></a>fd</h2><p>连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码<br><img src="http://i.imgur.com/1VMtzNG.png" alt=""><br>只要把fd设置为0，即便准输入文件的文件描述符，然后读入的内容和”LETMEWIN\n”相同就可得到flag</p>
+<h2 id="collision"><a href="#collision" class="headerlink" title="collision"></a>collision</h2><p>依旧是三个文件，源代码如下:<br><img src="http://i.imgur.com/olGTLwG.png" alt=""><br>需要输入20byte的passcode，在经过check_password()函数处理后，和hashcode’0x21DD09EC’相等，就可以获得flag。check_password()把passcode类型转化为int后，分为5组相加等于0x21DD09EC。所以干脆把0x21DD09EC分成5份，最好就是4个0x0101和一个0x1DD905E8。使用perl或者python可以简化输入过程。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -136,7 +136,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-fd"><span class="toc-number">1.</span> <span class="toc-text">1.fd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-collision"><span class="toc-number">2.</span> <span class="toc-text">2.collision</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fd"><span class="toc-number">1.</span> <span class="toc-text">fd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#collision"><span class="toc-number">2.</span> <span class="toc-text">collision</span></a></li></ol>
   </div>
 
 <div id="asidepart">
