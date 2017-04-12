@@ -9,7 +9,7 @@
     
     <meta name="author" content="Weinan Wu">
     
-    <meta name="description" content="1.fd连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码123456789101112131415161718192021#include &amp;lt;stdio.h&amp;gt;#include &amp;lt;stdlib.h&amp;gt;#include &amp;lt;string.h&amp;gt;char">
+    <meta name="description" content="1.fd连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码12345678910111213141516171819202122#include &amp;lt;stdio.h&amp;gt;#include &amp;lt;stdlib.h&amp;gt;#include &amp;lt;string.h&amp;gt;ch">
     
     
     
@@ -73,7 +73,7 @@
     </p>
   <p class="article-time">
     <time datetime="2017-04-11T05:56:15.000Z" itemprop="datePublished">2017-04-11</time>
-    更新日期:<time datetime="2017-04-12T12:16:38.219Z" itemprop="dateModified">2017-04-12</time>
+    更新日期:<time datetime="2017-04-12T12:19:32.176Z" itemprop="dateModified">2017-04-12</time>
     
   </p>
 </header>
@@ -85,7 +85,7 @@
 		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-fd"><span class="toc-number">1.</span> <span class="toc-text">1.fd</span></a></li></ol>
 		</div>
 		
-		<h2 id="1-fd"><a href="#1-fd" class="headerlink" title="1.fd"></a>1.fd</h2><p>连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line">#include &lt;string.h&gt;</div><div class="line">char buf[32];</div><div class="line">int main(int argc, char* argv[], char* envp[])&#123;</div><div class="line">        if(argc&lt;2)&#123;</div><div class="line">                printf(&quot;pass argv[1] a number\n&quot;);</div><div class="line">                return 0;</div><div class="line">        &#125;</div><div class="line">        int fd = atoi( argv[1] ) - 0x1234;</div><div class="line">        int len = 0;</div><div class="line">        len = read(fd, buf, 32);</div><div class="line">        if(!strcmp(&quot;LETMEWIN\n&quot;, buf))&#123;</div><div class="line">                printf(&quot;good job :)\n&quot;);</div><div class="line">                system(&quot;/bin/cat flag&quot;);</div><div class="line">                exit(0);</div><div class="line">        &#125;</div><div class="line">        printf(&quot;learn about Linux file IO\n&quot;);</div><div class="line">        return 0;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+		<h2 id="1-fd"><a href="#1-fd" class="headerlink" title="1.fd"></a>1.fd</h2><p>连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line">#include &lt;string.h&gt;</div><div class="line">char buf[32];</div><div class="line">int main(int argc, char* argv[], char* envp[])&#123;</div><div class="line">        if(argc&lt;2)&#123;</div><div class="line">                printf(&quot;pass argv[1] a number\n&quot;);</div><div class="line">                return 0;</div><div class="line">        &#125;</div><div class="line">        int fd = atoi( argv[1] ) - 0x1234;</div><div class="line">        int len = 0;</div><div class="line">        len = read(fd, buf, 32);</div><div class="line">        if(!strcmp(&quot;LETMEWIN\n&quot;, buf))&#123;</div><div class="line">                printf(&quot;good job :)\n&quot;);</div><div class="line">                system(&quot;/bin/cat flag&quot;);</div><div class="line">                exit(0);</div><div class="line">        &#125;</div><div class="line">        printf(&quot;learn about Linux file IO\n&quot;);</div><div class="line">        return 0;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
   
 	</div>
 		<footer class="article-footer clearfix">
