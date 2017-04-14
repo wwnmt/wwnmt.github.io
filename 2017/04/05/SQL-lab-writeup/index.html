@@ -75,7 +75,7 @@
     </p>
   <p class="article-time">
     <time datetime="2017-04-05T06:46:12.000Z" itemprop="datePublished">2017-04-05</time>
-    更新日期:<time datetime="2017-04-14T08:02:39.422Z" itemprop="dateModified">2017-04-14</time>
+    更新日期:<time datetime="2017-04-14T08:04:52.607Z" itemprop="dateModified">2017-04-14</time>
     
   </p>
 </header>
@@ -129,9 +129,10 @@
 <h4 id="Less-7-GET-Dump-into-outfile-String"><a href="#Less-7-GET-Dump-into-outfile-String" class="headerlink" title="Less-7 GET - Dump into outfile - String"></a>Less-7 GET - Dump into outfile - String</h4><p>导出文件可以把一句话木马导入到一个新的test.php文件中，再用菜刀连接它。<br>常用的语句就是SELECT “一句话木马” into outfile “路径\test.php”，需要绝对路径才行。<br>@@datadir可以读取数据库路径，@@basedir获取MYSQL安装路径，这里使用上两题的方法获取:<br><img src="http://i.imgur.com/ymksHec.png" alt=""><br>被无情的拒绝了，因为less-7的源码中，把<code>print_r(mysql_error());</code>注释了，用一句固定的error信息回复，这是防御sql注入的一种方法。那就暂时去掉注释获得路径吧，如果是实际应用中，这种控制了错误回显的盲注我还不会。<br><img src="http://i.imgur.com/j2XwUFw.png" alt=""><br><img src="http://i.imgur.com/ZNmDVa1.png" alt=""></p>
 <p>获得路径了，开始导入木马文件<br><img src="http://i.imgur.com/w5TZfPx.png" alt=""></p>
 <p>没成功，因为–secure-file-priv影响了对文件的导入导出，我的my.ini中有<br><code>secure-file-priv=&quot;datadir=&quot;G:\AppServ/MySQL/Uploads&quot;</code><br>简单点把这句注释掉，重启mysql。成功导出文件后，可以上菜刀了。<br><img src="http://i.imgur.com/JFZHvlL.png" alt=""></p>
-<h4 id="Less-8-Blind-Boolian-based-Single-Quotes"><a href="#Less-8-Blind-Boolian-based-Single-Quotes" class="headerlink" title="Less-8 Blind - Boolian based - Single Quotes"></a>Less-8 Blind - Boolian based - Single Quotes</h4><p>通过加引号等方法测试都得不到有效的信息，大概这里把<code>print_r(mysql_error())</code>注释了，所以双查询注入没用。<br>0x00 盲注</p>
+<h4 id="Less-8-Blind-Boolian-based-Single-Quotes"><a href="#Less-8-Blind-Boolian-based-Single-Quotes" class="headerlink" title="Less-8 Blind - Boolian based - Single Quotes"></a>Less-8 Blind - Boolian based - Single Quotes</h4><p>通过加引号等方法测试都得不到有效的信息，大概这里把<code>print_r(mysql_error())</code>注释了，所以双查询注入没用。</p>
+<p>0x00 盲注</p>
 <blockquote>
-<p>盲注是很重视手工注入技巧，因为盲注只有True和False获得的信息远没有普通注入多，难以采用工具进行注入。</p>
+<p>盲注重视手工注入技巧，盲注只有True和False获得的信息远没有普通注入多，难以采用工具进行注入。</p>
 </blockquote>
 <p>0x01 寻找注入点</p>
 <blockquote>
