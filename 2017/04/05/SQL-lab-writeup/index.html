@@ -1,93 +1,140 @@
 
- <!DOCTYPE HTML>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html>
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   
-    <title>SQL-lab writeup | wWn&#39;s blog</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
-    
-    <meta name="author" content="Weinan Wu">
-    
-    <meta name="description" content="sql-lab wirteup这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过https://github.com/Audi-1/sqli-labs下载，下面是简单的安装教程。
-安装：
-提前装好apache+php+MySQL,推荐使用Appserv等便捷套件">
-    
-    
-    
-    
-    
-    <link rel="icon" href="/img/favicon.ico">
-    
-    
-    <link rel="apple-touch-icon" href="/img/pacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
-    
-    <link rel="stylesheet" href="/css/style.css">
+  <title>SQL-lab writeup | wWn&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="sql-lab wirteup这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过https://github.com/Audi-1/sqli-labs下载，下面是简单的安装教程。 安装： 提前装好apache+php+MySQL,推荐使用Appserv等便捷套件 从https://github.com/Audi-1/sqli-labs下载解压到/www目录下">
+<meta name="keywords" content="sql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL-lab writeup">
+<meta property="og:url" content="http://www.wuweinan.top/2017/04/05/SQL-lab-writeup/index.html">
+<meta property="og:site_name" content="wWn's blog">
+<meta property="og:description" content="sql-lab wirteup这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过https://github.com/Audi-1/sqli-labs下载，下面是简单的安装教程。 安装： 提前装好apache+php+MySQL,推荐使用Appserv等便捷套件 从https://github.com/Audi-1/sqli-labs下载解压到/www目录下">
+<meta property="og:image" content="http://i.imgur.com/09TcuBl.jpg">
+<meta property="og:image" content="http://i.imgur.com/XVFGfh6.png">
+<meta property="og:image" content="http://i.imgur.com/3ZTsDBb.png">
+<meta property="og:image" content="http://i.imgur.com/CsypE1v.png">
+<meta property="og:image" content="http://i.imgur.com/j4dmKSo.png">
+<meta property="og:image" content="http://i.imgur.com/zeroTbg.png">
+<meta property="og:image" content="http://i.imgur.com/befdG9g.png">
+<meta property="og:image" content="http://i.imgur.com/IQT5rmF.png">
+<meta property="og:image" content="http://i.imgur.com/4fHorjv.png">
+<meta property="og:image" content="http://i.imgur.com/9DNK4ah.png">
+<meta property="og:image" content="http://i.imgur.com/dcWyzJ8.png">
+<meta property="og:image" content="http://i.imgur.com/oQh378z.png">
+<meta property="og:image" content="http://i.imgur.com/TdwdXQz.png">
+<meta property="og:image" content="http://i.imgur.com/PXQgueY.png">
+<meta property="og:image" content="http://i.imgur.com/fk9me0j.png">
+<meta property="og:image" content="http://i.imgur.com/Mr44Nca.png">
+<meta property="og:image" content="http://i.imgur.com/gjOqGsU.png">
+<meta property="og:image" content="http://i.imgur.com/C5pMNGc.png">
+<meta property="og:image" content="http://i.imgur.com/IBgmyYW.png">
+<meta property="og:image" content="http://i.imgur.com/yzye0ue.png">
+<meta property="og:image" content="http://i.imgur.com/5RWy7GA.png">
+<meta property="og:image" content="http://i.imgur.com/ymksHec.png">
+<meta property="og:image" content="http://i.imgur.com/j2XwUFw.png">
+<meta property="og:image" content="http://i.imgur.com/ZNmDVa1.png">
+<meta property="og:image" content="http://i.imgur.com/w5TZfPx.png">
+<meta property="og:image" content="http://i.imgur.com/JFZHvlL.png">
+<meta property="og:image" content="http://i.imgur.com/9JEZntq.png">
+<meta property="og:image" content="http://i.imgur.com/Wfoas02.png">
+<meta property="og:updated_time" content="2017-04-16T14:06:06.689Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQL-lab writeup">
+<meta name="twitter:description" content="sql-lab wirteup这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过https://github.com/Audi-1/sqli-labs下载，下面是简单的安装教程。 安装： 提前装好apache+php+MySQL,推荐使用Appserv等便捷套件 从https://github.com/Audi-1/sqli-labs下载解压到/www目录下">
+<meta name="twitter:image" content="http://i.imgur.com/09TcuBl.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="wWn&#39;s blog" type="application/atom+xml">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+  
+
 </head>
 
-  <body>
-    <header>
-      <div>
-		
-			<div id="imglogo">
-				<a href="/"><img src="/img/logo.svg" alt="wWn&#39;s blog" title="wWn&#39;s blog"/></a>
-			</div>
-			
-			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="wWn&#39;s blog">wWn&#39;s blog</a></h1>
-				<h2 class="blog-motto">自觉觉人</h2>
-			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
-			</a></div>
-			<nav class="animated">
-				<ul>
-					
-						<li><a href="/">Home</a></li>
-					
-						<li><a href="/archives">归档</a></li>
-					
-					<li>
-					
-					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-						<input type="hidden" name="q" value="site:www.wuweinan.top">
-					</form>
-					
-					</li>
-				</ul>
-			</nav>			
-</div>
-
-    </header>
-    <div id="container">
-      <div id="main" class="post" itemscope itemprop="blogPost">
-	<article itemprop="articleBody"> 
-		<header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/04/05/SQL-lab-writeup/" title="SQL-lab writeup" itemprop="url">SQL-lab writeup</a>
-  </h1>
-  <p class="article-author">By
-    
-      <a href="http://www.wuweinan.top" title="Weinan Wu">Weinan Wu</a>
-    </p>
-  <p class="article-time">
-    <time datetime="2017-04-05T06:46:12.000Z" itemprop="datePublished">2017-04-05</time>
-    更新日期:<time datetime="2017-04-16T14:06:06.689Z" itemprop="dateModified">2017-04-16</time>
-    
-  </p>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <nav id="upper-nav" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <div class="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+          <a id="nav-github" class="nav-icon" href="https://github.com/myname"></a>
+        
+      </div>
+    </nav>
+    <div id="header-title">
+      
+        <h1 id="blog-title-wrap">
+          <a href="/" id="blog-title">My Blog</a>
+        </h1>
+      
+    </div>
+    <div id="contenedor">
+      <ul class="cube">
+        <li class="cara">MyLogo</li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+      </ul>
+    </div>
+    <nav id="main-nav">
+      
+        <a class="main-nav-link" href="/">Home</a>
+      
+        <a class="main-nav-link" href="/archives">Archives</a>
+      
+        <a class="main-nav-link" href="/about">About</a>
+      
+      <a class="main-nav-link st-search-show-outputs">Search</a>
+    </nav>
+  </div>
 </header>
-	<div class="article-content">
-		
-		
-		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sql-lab-wirteup"><span class="toc-number">1.</span> <span class="toc-text">sql-lab wirteup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装："><span class="toc-number">1.1.</span> <span class="toc-text">安装：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-1-GET-Error-based-Single-quotes-String"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">Less-1 GET - Error based - Single quotes - String</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#猜表中字段数"><span class="toc-number">1.1.0.1.1.</span> <span class="toc-text">猜表中字段数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#获取当前数据库信息、用户信息"><span class="toc-number">1.1.0.1.2.</span> <span class="toc-text">获取当前数据库信息、用户信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查询security中的表"><span class="toc-number">1.1.0.1.3.</span> <span class="toc-text">查询security中的表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查询users表中的字段名"><span class="toc-number">1.1.0.1.4.</span> <span class="toc-text">查询users表中的字段名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#一一列出想要的用户名和密码啦"><span class="toc-number">1.1.0.1.5.</span> <span class="toc-text">一一列出想要的用户名和密码啦</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-2-GET-Error-based-intiger-based"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">Less-2 GET - Error based - intiger based</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-3-GET-Error-based-Single-quotes-with-twist-String"><span class="toc-number">1.1.0.3.</span> <span class="toc-text">Less-3 GET - Error based - Single quotes with twist - String</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-4-GET-Error-based-Double-Quotes-String"><span class="toc-number">1.1.0.4.</span> <span class="toc-text">Less-4 GET - Error based - Double Quotes - String</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-5-GET-Double-Injection-Single-Quotes-String"><span class="toc-number">1.1.0.5.</span> <span class="toc-text">Less-5 GET - Double Injection - Single Quotes - String</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-6-GET-Double-Injection-Double-Quotes-String"><span class="toc-number">1.1.0.6.</span> <span class="toc-text">Less-6 GET - Double Injection - Double Quotes - String</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-7-GET-Dump-into-outfile-String"><span class="toc-number">1.1.0.7.</span> <span class="toc-text">Less-7 GET - Dump into outfile - String</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-8-Blind-Boolian-based-Single-Quotes"><span class="toc-number">1.1.0.8.</span> <span class="toc-text">Less-8 Blind - Boolian based - Single Quotes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-9-Blind-Timed-based-Single-Quotes"><span class="toc-number">1.1.0.9.</span> <span class="toc-text">Less-9 Blind - Timed based - Single Quotes</span></a></li></ol></li></ol></li></ol></li></ol>
-		</div>
-		
-		<h1 id="sql-lab-wirteup"><a href="#sql-lab-wirteup" class="headerlink" title="sql-lab wirteup"></a>sql-lab wirteup</h1><p>这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载，下面是简单的安装教程。</p>
+
+    <div class="outer">
+      <section id="main"><article id="post-SQL-lab-writeup" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/2017/04/05/SQL-lab-writeup/" class="article-date">
+  <time datetime="2017-04-05T06:46:12.000Z" itemprop="datePublished">2017-04-05</time>
+</h3>
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SQL-lab writeup
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <h1 id="sql-lab-wirteup"><a href="#sql-lab-wirteup" class="headerlink" title="sql-lab wirteup"></a>sql-lab wirteup</h1><p>这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载，下面是简单的安装教程。</p>
 <h2 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h2><blockquote>
 <p>提前装好apache+php+MySQL,推荐使用Appserv等便捷套件</p>
 <p>从<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载解压到/www目录下</p>
@@ -144,227 +191,149 @@
 </blockquote>
 <p><img src="http://i.imgur.com/9JEZntq.png" alt=""><br><img src="http://i.imgur.com/Wfoas02.png" alt=""></p>
 <h4 id="Less-9-Blind-Timed-based-Single-Quotes"><a href="#Less-9-Blind-Timed-based-Single-Quotes" class="headerlink" title="Less-9 Blind - Timed based - Single Quotes"></a>Less-9 Blind - Timed based - Single Quotes</h4><p>less-9无论sql语是否有错都只显示’You are in …’，需要基于时间进行盲注。在less-8的基础上加上sleep(n)函数辅助判断，n单位是秒。<br>Less-9/?id=1%27%20and%20if(ascii(substr(database(),1,1))%3E115,0,sleep(5))%23<br>通过以上方法写一个脚步可以把所有信息跑出来。</p>
-  
-	</div>
-		<footer class="article-footer clearfix">
 
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/sql/">sql</a>
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
+
+        <a data-url="http://www.wuweinan.top/2017/04/05/SQL-lab-writeup/" data-id="cj1ksm08c00009jrhe58tq94q" class="article-share-link">分享到</a>
+        
+      </div>
+    </footer>
   </div>
-
-
-
-
-<div class="article-share" id="share">
-
-  <div data-url="http://www.wuweinan.top/2017/04/05/SQL-lab-writeup/" data-title="SQL-lab writeup | wWn&#39;s blog" data-tsina="null" class="share clearfix">
   </div>
-
-</div>
-</footer>   	       
-	</article>
-	
-<nav class="article-nav clearfix">
- 
- <div class="prev" >
- <a href="/2017/04/05/hello-world/" title="Hello World">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  Hello World</span>
-</a>
-</div>
-
-
-<div class="next">
-<a href="/2017/04/08/python-装饰器/"  title="python 函数工具">
- <strong>NEXT:</strong><br/> 
- <span>python 函数工具
-</span>
-</a>
-</div>
-
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/05/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/08/python-装饰器/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">python 函数工具</div>
+    </a>
+  
 </nav>
 
-	
-</div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+  
+</article>
 
-  <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sql-lab-wirteup"><span class="toc-number">1.</span> <span class="toc-text">sql-lab wirteup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装："><span class="toc-number">1.1.</span> <span class="toc-text">安装：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-1-GET-Error-based-Single-quotes-String"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">Less-1 GET - Error based - Single quotes - String</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#猜表中字段数"><span class="toc-number">1.1.0.1.1.</span> <span class="toc-text">猜表中字段数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#获取当前数据库信息、用户信息"><span class="toc-number">1.1.0.1.2.</span> <span class="toc-text">获取当前数据库信息、用户信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查询security中的表"><span class="toc-number">1.1.0.1.3.</span> <span class="toc-text">查询security中的表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查询users表中的字段名"><span class="toc-number">1.1.0.1.4.</span> <span class="toc-text">查询users表中的字段名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#一一列出想要的用户名和密码啦"><span class="toc-number">1.1.0.1.5.</span> <span class="toc-text">一一列出想要的用户名和密码啦</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-2-GET-Error-based-intiger-based"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">Less-2 GET - Error based - intiger based</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-3-GET-Error-based-Single-quotes-with-twist-String"><span class="toc-number">1.1.0.3.</span> <span class="toc-text">Less-3 GET - Error based - Single quotes with twist - String</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-4-GET-Error-based-Double-Quotes-String"><span class="toc-number">1.1.0.4.</span> <span class="toc-text">Less-4 GET - Error based - Double Quotes - String</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-5-GET-Double-Injection-Single-Quotes-String"><span class="toc-number">1.1.0.5.</span> <span class="toc-text">Less-5 GET - Double Injection - Single Quotes - String</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-6-GET-Double-Injection-Double-Quotes-String"><span class="toc-number">1.1.0.6.</span> <span class="toc-text">Less-6 GET - Double Injection - Double Quotes - String</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-7-GET-Dump-into-outfile-String"><span class="toc-number">1.1.0.7.</span> <span class="toc-text">Less-7 GET - Dump into outfile - String</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-8-Blind-Boolian-based-Single-Quotes"><span class="toc-number">1.1.0.8.</span> <span class="toc-text">Less-8 Blind - Boolian based - Single Quotes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Less-9-Blind-Timed-based-Single-Quotes"><span class="toc-number">1.1.0.9.</span> <span class="toc-text">Less-9 Blind - Timed based - Single Quotes</span></a></li></ol></li></ol></li></ol></li></ol>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/11/python网络编程学习记录/">python网络编程学习记录</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/11/pwnable-kr学习pwn-虽然是从零开始/">pwnable.kr学习pwn--虽然是从零开始</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/08/python-装饰器/">python 函数工具</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/05/SQL-lab-writeup/">SQL-lab writeup</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/05/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
   </div>
 
-<div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
-<aside class="clearfix">
-
   
-
-  
-<div class="tagslist">
-	<p class="asidetitle">标签</p>
-		<ul class="clearfix">
-		
-			<li><a href="/tags/pwn/" title="pwn">pwn<sup>1</sup></a></li>
-		
-			<li><a href="/tags/python/" title="python">python<sup>1</sup></a></li>
-		
-			<li><a href="/tags/sql/" title="sql">sql<sup>1</sup></a></li>
-		
-		</ul>
-</div>
-
-
-  <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
-    <ul>
-      <li><a href="http://yangjian.me" target="_blank" title="YangJian">Alimon's Blog</a></li>
-      <li><a href="http://hexo.io" target="_blank" title="Hexo">Hexo</a></li>
-    </ul>
-</div>
-
-
-  
-
-</aside>
-</div>
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/">pwn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a><span class="tag-list-count">1</span></li></ul>
     </div>
-    <footer><div id="footer" >
-	
-	<div class="line">
-		<span></span>
-		<div class="author"></div>
-	</div>
-	
-	
-	<div class="social-font clearfix">
-		
-		
-		
-		
-		
-	</div>
-		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2017 
-		
-		<a href="http://www.wuweinan.top" target="_blank" title="Weinan Wu">Weinan Wu</a>
-		
-		</p>
-</div>
-</footer>
-    <script src="/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  $('.navbar').click(function(){
-    $('header nav').toggleClass('shownav');
-  });
-  var myWidth = 0;
-  function getSize(){
-    if( typeof( window.innerWidth ) == 'number' ) {
-      myWidth = window.innerWidth;
-    } else if( document.documentElement && document.documentElement.clientWidth) {
-      myWidth = document.documentElement.clientWidth;
-    };
-  };
-  var m = $('#main'),
-      a = $('#asidepart'),
-      c = $('.closeaside'),
-      o = $('.openaside');
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else
-    {
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
       
-      $('#toc.toc-aside').css('display', 'none');
-        
-    }
-  });
-  c.click(function(){
-    a.addClass('fadeOut').css('display', 'none');
-    o.css('display', 'block').addClass('fadeIn');
-    m.addClass('moveMain');
-  });
-  o.click(function(){
-    o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
-    m.removeClass('moveMain');
-  });
-  $(window).scroll(function(){
-    o.css("top",Math.max(80,260-$(this).scrollTop()));
-  });
-});
-</script>
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Weinan Wu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
+</nav>
+  
 
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var ai = $('.article-content>iframe'),
-      ae = $('.article-content>embed'),
-      t  = $('#toc'),
-      h  = $('article h2')
-      ah = $('article h2'),
-      ta = $('#toc.toc-aside'),
-      o  = $('.openaside'),
-      c  = $('.closeaside');
-  if(ai.length>0){
-    ai.wrap('<div class="video-container" />');
-  };
-  if(ae.length>0){
-   ae.wrap('<div class="video-container" />');
-  };
-  if(ah.length==0){
-    t.css('display','none');
-  }else{
-    c.click(function(){
-      ta.css('display', 'block').addClass('fadeIn');
-    });
-    o.click(function(){
-      ta.css('display', 'none');
-    });
-    $(window).scroll(function(){
-      ta.css("top",Math.max(140,320-$(this).scrollTop()));
-    });
-  };
-});
-</script>
+<!-- totop start -->
+<div id="totop">
+	<a title="返回顶部"></a>
+</div>
+<!-- totop end -->
 
+<!-- swiftype search start -->
 
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var $this = $('.share'),
-      url = $this.attr('data-url'),
-      encodedUrl = encodeURIComponent(url),
-      title = $this.attr('data-title'),
-      tsina = $this.attr('data-tsina');
-  var html = [
-  '<a href="#" class="overlay" id="qrcode"></a>',
-  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
-  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
-  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
-  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
-  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
-  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
-  '<span title="Share to"></span>'
-  ].join('');
-  $this.append(html);
-  $('.article-share-qrcode').click(function(){
-    var imgSrc = $('#qrcode-pic').attr('data-src');
-    $('#qrcode-pic').attr('src', imgSrc);
-    $('#qrcode-pic').load(function(){
-        $('.qrcode strong').text(' ');
-    });
-  });
-});     
-</script>
+<!-- swiftype search end -->
 
 
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
 
 
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
-  </body>
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
 </html>
