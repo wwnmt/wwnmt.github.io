@@ -75,7 +75,7 @@
     </p>
   <p class="article-time">
     <time datetime="2017-04-05T06:46:12.000Z" itemprop="datePublished">2017-04-05</time>
-    更新日期:<time datetime="2017-04-15T11:07:09.707Z" itemprop="dateModified">2017-04-15</time>
+    更新日期:<time datetime="2017-04-16T14:06:06.689Z" itemprop="dateModified">2017-04-16</time>
     
   </p>
 </header>
@@ -143,7 +143,8 @@
 <p>通常由一般方法、基于时间延迟方法、正则表达式方法等，less-8就是一般方法<br>‘a’的ascii码是64,所以就这么一个一个去试，就完成了，最好写个脚本<br>?id=1%27%20and%20ascii(substr((select%20database()),1,1))%3C64%20%23</p>
 </blockquote>
 <p><img src="http://i.imgur.com/9JEZntq.png" alt=""><br><img src="http://i.imgur.com/Wfoas02.png" alt=""></p>
-<h4 id="Less-9-Blind-Timed-based-Single-Quotes"><a href="#Less-9-Blind-Timed-based-Single-Quotes" class="headerlink" title="Less-9 Blind - Timed based - Single Quotes"></a>Less-9 Blind - Timed based - Single Quotes</h4>  
+<h4 id="Less-9-Blind-Timed-based-Single-Quotes"><a href="#Less-9-Blind-Timed-based-Single-Quotes" class="headerlink" title="Less-9 Blind - Timed based - Single Quotes"></a>Less-9 Blind - Timed based - Single Quotes</h4><p>less-9无论sql语是否有错都只显示’You are in …’，需要基于时间进行盲注。在less-8的基础上加上sleep(n)函数辅助判断，n单位是秒。<br>Less-9/?id=1%27%20and%20if(ascii(substr(database(),1,1))%3E115,0,sleep(5))%23<br>通过以上方法写一个脚步可以把所有信息跑出来。</p>
+  
 	</div>
 		<footer class="article-footer clearfix">
 
