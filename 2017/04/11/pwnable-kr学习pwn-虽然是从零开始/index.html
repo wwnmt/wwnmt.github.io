@@ -74,7 +74,7 @@ collision依旧是三个文件，源代码如下:需要输入20byte的passcode�
     </p>
   <p class="article-time">
     <time datetime="2017-04-11T05:56:15.000Z" itemprop="datePublished">2017-04-11</time>
-    更新日期:<time datetime="2017-04-16T02:22:09.071Z" itemprop="dateModified">2017-04-16</time>
+    更新日期:<time datetime="2017-04-16T02:24:19.031Z" itemprop="dateModified">2017-04-16</time>
     
   </p>
 </header>
@@ -83,7 +83,7 @@ collision依旧是三个文件，源代码如下:需要输入20byte的passcode�
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fd"><span class="toc-number">1.</span> <span class="toc-text">fd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#collision"><span class="toc-number">2.</span> <span class="toc-text">collision</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bof"><span class="toc-number">3.</span> <span class="toc-text">bof</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag"><span class="toc-number">4.</span> <span class="toc-text">flag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#passcode"><span class="toc-number">5.</span> <span class="toc-text">passcode</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fd"><span class="toc-number">1.</span> <span class="toc-text">fd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#collision"><span class="toc-number">2.</span> <span class="toc-text">collision</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bof"><span class="toc-number">3.</span> <span class="toc-text">bof</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag"><span class="toc-number">4.</span> <span class="toc-text">flag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#passcode"><span class="toc-number">5.</span> <span class="toc-text">passcode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#random"><span class="toc-number">6.</span> <span class="toc-text">random</span></a></li></ol>
 		</div>
 		
 		<h2 id="fd"><a href="#fd" class="headerlink" title="fd"></a>fd</h2><p>连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码<br><img src="http://i.imgur.com/1VMtzNG.png" alt=""><br>只要把fd设置为0，即便准输入文件的文件描述符，然后读入的内容和”LETMEWIN\n”相同就可得到flag</p>
@@ -97,6 +97,8 @@ collision依旧是三个文件，源代码如下:需要输入20byte的passcode�
 <p>通过IDA找到system(“bin/cat flag”)的地址为0x080485e3,fflush的地址是0x804a004<br><img src="http://i.imgur.com/tPM0XPp.png" alt=""></p>
 <p>而且welcome和login用的是同一栈帧，所以name:ebp-0x70，password1:ebp-0x10，password2:ebp-0xc<br><img src="http://i.imgur.com/BkDCX1G.png" alt=""><br><img src="http://i.imgur.com/0nrZccz.png" alt=""></p>
 <p>所以构造shellcode,结果不对，因为scanf中用%d读取数据，所以第二个地址要换成十进制数<br>python -c ‘print “A”*96 + “\x04\xa0\x04\x08” + “\xe3\x85\x04\x08”‘ | ./passcode</p>
+<h2 id="random"><a href="#random" class="headerlink" title="random"></a>random</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">        unsigned int random;</div><div class="line">        random = rand();        // random value!</div><div class="line"></div><div class="line">        unsigned int key=0;</div><div class="line">        scanf(&quot;%d&quot;, &amp;key);</div><div class="line"></div><div class="line">        if( (key ^ random) == 0xdeadbeef )&#123;</div><div class="line">                printf(&quot;Good!\n&quot;);</div><div class="line">                system(&quot;/bin/cat flag&quot;);</div><div class="line">                return 0;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        printf(&quot;Wrong, maybe you should try 2^32 cases.\n&quot;);</div><div class="line">        return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>rand()产生的是伪随机数，每次随机的数都一样，修改random.c，跑一次打印出随机数是多少就可解得flag。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -145,7 +147,7 @@ collision依旧是三个文件，源代码如下:需要输入20byte的passcode�
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fd"><span class="toc-number">1.</span> <span class="toc-text">fd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#collision"><span class="toc-number">2.</span> <span class="toc-text">collision</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bof"><span class="toc-number">3.</span> <span class="toc-text">bof</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag"><span class="toc-number">4.</span> <span class="toc-text">flag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#passcode"><span class="toc-number">5.</span> <span class="toc-text">passcode</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fd"><span class="toc-number">1.</span> <span class="toc-text">fd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#collision"><span class="toc-number">2.</span> <span class="toc-text">collision</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bof"><span class="toc-number">3.</span> <span class="toc-text">bof</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag"><span class="toc-number">4.</span> <span class="toc-text">flag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#passcode"><span class="toc-number">5.</span> <span class="toc-text">passcode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#random"><span class="toc-number">6.</span> <span class="toc-text">random</span></a></li></ol>
   </div>
 
 <div id="asidepart">
