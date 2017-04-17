@@ -89,9 +89,9 @@
     <link href="http://www.wuweinan.top/2017/04/05/SQL-lab-writeup/"/>
     <id>http://www.wuweinan.top/2017/04/05/SQL-lab-writeup/</id>
     <published>2017-04-05T06:46:12.000Z</published>
-    <updated>2017-04-16T14:06:06.689Z</updated>
+    <updated>2017-04-17T09:06:39.645Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="sql-lab-wirteup"><a href="#sql-lab-wirteup" class="headerlink" title="sql-lab wirteup"></a>sql-lab wirteup</h1><p>这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载，下面是简单的安装教程。</p>
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载，下面是简单的安装教程。</p>
 <h2 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h2><blockquote>
 <p>提前装好apache+php+MySQL,推荐使用Appserv等便捷套件</p>
 <p>从<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载解压到/www目录下</p>
@@ -152,12 +152,10 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;sql-lab-wirteup&quot;&gt;&lt;a href=&quot;#sql-lab-wirteup&quot; class=&quot;headerlink&quot; title=&quot;sql-lab wirteup&quot;&gt;&lt;/a&gt;sql-lab wirteup&lt;/h1&gt;&lt;p&gt;这里的练习对象是sql-lab，是一
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过&lt;a href=&quot;https://github.co
     
     </summary>
     
-    
-      <category term="sql" scheme="http://www.wuweinan.top/tags/sql/"/>
     
   </entry>
   
