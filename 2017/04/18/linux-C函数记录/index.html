@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="手术进行中…医生发现病人漏油了…于是找来了修车师傅 修车师傅称自己只会修车，不会修洗衣机">
+<meta name="description" content="前言&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计心血的函数。主要针对apue和unix环境下的编程。 不带缓存的文件I/O类&amp;emsp;&amp;emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里">
 <meta name="keywords" content="linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="linux C函数记录">
+<meta property="og:title" content="linux 函数记录">
 <meta property="og:url" content="http://www.wuweinan.top/2017/04/18/linux-C函数记录/index.html">
 <meta property="og:site_name" content="wwNan's blog">
-<meta property="og:description" content="手术进行中…医生发现病人漏油了…于是找来了修车师傅 修车师傅称自己只会修车，不会修洗衣机">
-<meta property="og:updated_time" content="2017-04-18T04:47:22.842Z">
+<meta property="og:description" content="前言&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计心血的函数。主要针对apue和unix环境下的编程。 不带缓存的文件I/O类&amp;emsp;&amp;emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里">
+<meta property="og:updated_time" content="2017-04-18T05:35:16.251Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="linux C函数记录">
-<meta name="twitter:description" content="手术进行中…医生发现病人漏油了…于是找来了修车师傅 修车师傅称自己只会修车，不会修洗衣机">
+<meta name="twitter:title" content="linux 函数记录">
+<meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计心血的函数。主要针对apue和unix环境下的编程。 不带缓存的文件I/O类&amp;emsp;&amp;emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里">
 
 
 
@@ -131,7 +131,7 @@
 
 
 
-  <title> linux C函数记录 | wwNan's blog </title>
+  <title> linux 函数记录 | wwNan's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -281,7 +281,7 @@
             
             
               
-                linux C函数记录
+                linux 函数记录
               
             
           </h1>
@@ -332,7 +332,17 @@
       
 
       
-        
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&emsp;&emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计心血的函数。主要针对apue和unix环境下的编程。</p>
+<h3 id="不带缓存的文件I-O类"><a href="#不带缓存的文件I-O类" class="headerlink" title="不带缓存的文件I/O类"></a>不带缓存的文件I/O类</h3><p>&emsp;&emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里记录的主要是不带缓存的open、read等I/O函数,每一个都调用一个系统调用。</p>
+<ol>
+<li><p>int open(const char* pathname, in oflag, //mode_t mode)<br>//文件名，O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_APPEND，创建文件时使用第三参数<br>//打开、创建文件，返回文件描述符</p>
+</li>
+<li><p>int close(int fd)<br>//关闭文件</p>
+</li>
+<li><p>off_t lseek(int fd, off_t offset, int whence)<br>//fd, 偏移, SEEK_SET(文件头) | SEEK_CUR(当前) | SEEK_END(末尾)<br>//设置文件位移量</p>
+</li>
+</ol>
+
       
     </div>
 
@@ -429,8 +439,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://i.imgur.com/umimEoA.png"
@@ -508,6 +527,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不带缓存的文件I-O类"><span class="nav-number">1.1.</span> <span class="nav-text">不带缓存的文件I/O类</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

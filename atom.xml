@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wuweinan.top/"/>
-  <updated>2017-04-18T04:47:22.842Z</updated>
+  <updated>2017-04-18T05:35:16.251Z</updated>
   <id>http://www.wuweinan.top/</id>
   
   <author>
@@ -16,13 +16,27 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>linux C函数记录</title>
+    <title>linux 函数记录</title>
     <link href="http://www.wuweinan.top/2017/04/18/linux-C%E5%87%BD%E6%95%B0%E8%AE%B0%E5%BD%95/"/>
     <id>http://www.wuweinan.top/2017/04/18/linux-C函数记录/</id>
     <published>2017-04-18T04:43:35.000Z</published>
-    <updated>2017-04-18T04:47:22.842Z</updated>
+    <updated>2017-04-18T05:35:16.251Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&emsp;&emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计心血的函数。主要针对apue和unix环境下的编程。</p>
+<h3 id="不带缓存的文件I-O类"><a href="#不带缓存的文件I-O类" class="headerlink" title="不带缓存的文件I/O类"></a>不带缓存的文件I/O类</h3><p>&emsp;&emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里记录的主要是不带缓存的open、read等I/O函数,每一个都调用一个系统调用。</p>
+<ol>
+<li><p>int open(const char* pathname, in oflag, //mode_t mode)<br>//文件名，O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_APPEND，创建文件时使用第三参数<br>//打开、创建文件，返回文件描述符</p>
+</li>
+<li><p>int close(int fd)<br>//关闭文件</p>
+</li>
+<li><p>off_t lseek(int fd, off_t offset, int whence)<br>//fd, 偏移, SEEK_SET(文件头) | SEEK_CUR(当前) | SEEK_END(末尾)<br>//设置文件位移量</p>
+</li>
+</ol>
+]]></content>
     
     <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计心血的函数。主要针对apue和unix环境下
     
     </summary>
     
