@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wuweinan.top/"/>
-  <updated>2017-04-18T06:51:03.915Z</updated>
+  <updated>2017-04-18T06:52:35.563Z</updated>
   <id>http://www.wuweinan.top/</id>
   
   <author>
@@ -20,10 +20,10 @@
     <link href="http://www.wuweinan.top/2017/04/18/SQL-lab-writeup-POST%E7%AF%87/"/>
     <id>http://www.wuweinan.top/2017/04/18/SQL-lab-writeup-POST篇/</id>
     <published>2017-04-18T06:33:05.000Z</published>
-    <updated>2017-04-18T06:51:03.915Z</updated>
+    <updated>2017-04-18T06:52:35.563Z</updated>
     
     <content type="html"><![CDATA[<h4 id="less-11-POST-Error-Based-Single-quotes-String"><a href="#less-11-POST-Error-Based-Single-quotes-String" class="headerlink" title="less-11 POST - Error Based - Single quotes- String"></a>less-11 POST - Error Based - Single quotes- String</h4><p><img src="http://i.imgur.com/FLUDN4S.png" alt=""></p>
-<p>&emsp;&emsp;嗯！熟悉的登陆界面，没有账号密码怎么办？尝试登陆一下，admin admin。进去了!?别急，这是没有防护的理想状态下，这么好猜银行就混不下去了。要想悄悄地进去，首先要知道这里的SQL语句时如何构造的。<br><code>SELECT * FROM USERS WHERE USERNAME=&#39;?&quot; and PASSWORD=&#39;?&#39; limit 1,1</code><br>&emsp;&emsp;正常情况下的登陆语句都如上所示，但是生活中在这之前进行了诸多的过滤，层层的防护，现在从第一步开始，向一个没有任何防护的页面下手。但是生活中也有很多企业、单位，对登陆页面的security不重视，才会有如CSDN被爆出百万用户账号密码这种事情发生。不废话了。<br>&emsp;&emsp;根据上面的SQL语句，可以轻松写出:<br><code>SELECT * FROM USERS WHERE USERNAME=&#39;admin&#39; or &#39;1=1&#39; and PASSWORD=&#39;?&#39; limit 1,1</code><br>构造永真式，以admin登陆成功，这里构造方式很多，可以连password一起用上。<br><img src="http://i.imgur.com/Bib1fmS.png" alt=""></p>
+<p>&emsp;&emsp;嗯！熟悉的登陆界面，没有账号密码怎么办？尝试登陆一下，admin admin。进去了!?别急，这是没有防护的理想状态下，这么好猜银行就混不下去了。要想悄悄地进去，首先要知道这里的SQL语句时如何构造的。<br><code>SELECT * FROM USERS WHERE USERNAME=&#39;?&#39; and PASSWORD=&#39;?&#39; limit 1,1</code><br>&emsp;&emsp;正常情况下的登陆语句都如上所示，但是生活中在这之前进行了诸多的过滤，层层的防护，现在从第一步开始，向一个没有任何防护的页面下手。但是生活中也有很多企业、单位，对登陆页面的security不重视，才会有如CSDN被爆出百万用户账号密码这种事情发生。不废话了。<br>&emsp;&emsp;根据上面的SQL语句，可以轻松写出:<br><code>SELECT * FROM USERS WHERE USERNAME=&#39;admin&#39; or &#39;1=1&#39; and PASSWORD=&#39;?&#39; limit 1,1</code><br>&emsp;&emsp;构造永真式，以admin登陆成功，这里构造方式很多，可以连password一起用上。<br><img src="http://i.imgur.com/Bib1fmS.png" alt=""></p>
 ]]></content>
     
     <summary type="html">
@@ -133,9 +133,9 @@
     <link href="http://www.wuweinan.top/2017/04/05/SQL-lab-writeup/"/>
     <id>http://www.wuweinan.top/2017/04/05/SQL-lab-writeup/</id>
     <published>2017-04-05T06:46:12.000Z</published>
-    <updated>2017-04-17T14:28:56.768Z</updated>
+    <updated>2017-04-18T06:52:57.027Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载，下面是简单的安装教程。</p>
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这里的练习对象是sql-lab，是一个印度大佬完成后上传到github上的练习。所以通过<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载，下面是简单的安装教程。</p>
 <h2 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h2><blockquote>
 <p>提前装好apache+php+MySQL,推荐使用Appserv等便捷套件</p>
 <p>从<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载解压到/www目录下</p>
@@ -197,7 +197,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;这里的练习对象是sql-lab，是一个印度大佬完成后上传刀github上的练习。所以通过&lt;a href=&quot;https://github.co
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;这里的练习对象是sql-lab，是一个印度大佬完成后上传到github上的练习。所以通过&lt;a href=&quot;https://github.co
     
     </summary>
     
