@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wuweinan.top/"/>
-  <updated>2017-04-18T06:52:35.563Z</updated>
+  <updated>2017-04-19T09:10:56.341Z</updated>
   <id>http://www.wuweinan.top/</id>
   
   <author>
@@ -20,10 +20,11 @@
     <link href="http://www.wuweinan.top/2017/04/18/SQL-lab-writeup-POST%E7%AF%87/"/>
     <id>http://www.wuweinan.top/2017/04/18/SQL-lab-writeup-POST篇/</id>
     <published>2017-04-18T06:33:05.000Z</published>
-    <updated>2017-04-18T06:52:35.563Z</updated>
+    <updated>2017-04-19T09:10:56.341Z</updated>
     
     <content type="html"><![CDATA[<h4 id="less-11-POST-Error-Based-Single-quotes-String"><a href="#less-11-POST-Error-Based-Single-quotes-String" class="headerlink" title="less-11 POST - Error Based - Single quotes- String"></a>less-11 POST - Error Based - Single quotes- String</h4><p><img src="http://i.imgur.com/FLUDN4S.png" alt=""></p>
 <p>&emsp;&emsp;嗯！熟悉的登陆界面，没有账号密码怎么办？尝试登陆一下，admin admin。进去了!?别急，这是没有防护的理想状态下，这么好猜银行就混不下去了。要想悄悄地进去，首先要知道这里的SQL语句时如何构造的。<br><code>SELECT * FROM USERS WHERE USERNAME=&#39;?&#39; and PASSWORD=&#39;?&#39; limit 1,1</code><br>&emsp;&emsp;正常情况下的登陆语句都如上所示，但是生活中在这之前进行了诸多的过滤，层层的防护，现在从第一步开始，向一个没有任何防护的页面下手。但是生活中也有很多企业、单位，对登陆页面的security不重视，才会有如CSDN被爆出百万用户账号密码这种事情发生。不废话了。<br>&emsp;&emsp;根据上面的SQL语句，可以轻松写出:<br><code>SELECT * FROM USERS WHERE USERNAME=&#39;admin&#39; or &#39;1=1&#39; and PASSWORD=&#39;?&#39; limit 1,1</code><br>&emsp;&emsp;构造永真式，以admin登陆成功，这里构造方式很多，可以连password一起用上。<br><img src="http://i.imgur.com/Bib1fmS.png" alt=""></p>
+<h4 id="less-12-POST-Error-Based-Double-quotes-String-with-twist"><a href="#less-12-POST-Error-Based-Double-quotes-String-with-twist" class="headerlink" title="less-12 POST - Error Based - Double quotes- String -with twist"></a>less-12 POST - Error Based - Double quotes- String -with twist</h4><p>&emsp;&emsp;先用双引号测试，可以看到，还需要括号<br><img src="http://i.imgur.com/ezQiQTV.png" alt=""><br>&emsp;&emsp;在username这里作为注入点的话，语句比较多，因为要闭合’”)’，同理password也行。<br><img src="http://i.imgur.com/mWE5adv.png" alt=""><br>最后的‘1=1’也不需要。这里却是以Dump登陆的，说明’admin’改为任意字符也可以，因为可以使用注释符，简化后可为<code>uname=&quot;)or 1=1# &amp;passwd=</code>。如果想以admin登入还不知道怎么写。</p>
 ]]></content>
     
     <summary type="html">
@@ -42,10 +43,10 @@
     <link href="http://www.wuweinan.top/2017/04/18/linux-C%E5%87%BD%E6%95%B0%E8%AE%B0%E5%BD%95/"/>
     <id>http://www.wuweinan.top/2017/04/18/linux-C函数记录/</id>
     <published>2017-04-18T04:43:35.000Z</published>
-    <updated>2017-04-18T06:20:06.899Z</updated>
+    <updated>2017-04-19T12:17:37.992Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&emsp;&emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。</p>
-<h3 id="不带缓存的文件I-O类"><a href="#不带缓存的文件I-O类" class="headerlink" title="不带缓存的文件I/O类"></a>不带缓存的文件I/O类</h3><p>&emsp;&emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里记录的主要是不带缓存的open、read等I/O函数,每一个都调用一个系统调用。</p>
+<h3 id="不带缓存的文件I-O类"><a href="#不带缓存的文件I-O类" class="headerlink" title="不带缓存的文件I/O类"></a>不带缓存的文件I/O类</h3><p>&emsp;&emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里记录的主要是不带缓存的open、read等I/O函数,每一个都调用一个系统调用。linux以”int 80”进入系统调用，根据eax的值，即调用号在一个单位偏移量为4字节的系统调用表中寻找是哪个系统调用，如eax=0时是sys_exit。ebx,ecx,edx,esi,edi,ebp六个寄存器用来传递参数，在进入内核态时，会把六个寄存器的值依次入栈，一方面把寄存器空出来，另一方面系统调用函数可以直接在栈上取参数。</p>
 <ol>
 <li><p>#include “sys/types.h” “sys/stat.h” “fcntl.h”<br>int open(const char* pathname, in oflag, //mode_t mode);<br>//文件名，O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_APPEND，创建文件时使用第三参数<br>//打开、创建文件，返回文件描述符</p>
 </li>
@@ -68,6 +69,7 @@
 </li>
 </ol>
 <p>读/写磁盘文件时，以上函数都带有缓存机制。</p>
+<p>### </p>
 ]]></content>
     
     <summary type="html">

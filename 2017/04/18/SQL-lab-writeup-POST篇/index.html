@@ -96,7 +96,9 @@
 <meta property="og:description" content="less-11 POST - Error Based - Single quotes- String &amp;emsp;&amp;emsp;嗯！熟悉的登陆界面，没有账号密码怎么办？尝试登陆一下，admin admin。进去了!?别急，这是没有防护的理想状态下，这么好猜银行就混不下去了。要想悄悄地进去，首先要知道这里的SQL语句时如何构造的。SELECT * FROM USERS WHERE USERNAME=&amp;">
 <meta property="og:image" content="http://i.imgur.com/FLUDN4S.png">
 <meta property="og:image" content="http://i.imgur.com/Bib1fmS.png">
-<meta property="og:updated_time" content="2017-04-18T06:52:35.563Z">
+<meta property="og:image" content="http://i.imgur.com/ezQiQTV.png">
+<meta property="og:image" content="http://i.imgur.com/mWE5adv.png">
+<meta property="og:updated_time" content="2017-04-19T09:10:56.341Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL-lab writeup POST篇">
 <meta name="twitter:description" content="less-11 POST - Error Based - Single quotes- String &amp;emsp;&amp;emsp;嗯！熟悉的登陆界面，没有账号密码怎么办？尝试登陆一下，admin admin。进去了!?别急，这是没有防护的理想状态下，这么好猜银行就混不下去了。要想悄悄地进去，首先要知道这里的SQL语句时如何构造的。SELECT * FROM USERS WHERE USERNAME=&amp;">
@@ -337,6 +339,7 @@
       
         <h4 id="less-11-POST-Error-Based-Single-quotes-String"><a href="#less-11-POST-Error-Based-Single-quotes-String" class="headerlink" title="less-11 POST - Error Based - Single quotes- String"></a>less-11 POST - Error Based - Single quotes- String</h4><p><img src="http://i.imgur.com/FLUDN4S.png" alt=""></p>
 <p>&emsp;&emsp;嗯！熟悉的登陆界面，没有账号密码怎么办？尝试登陆一下，admin admin。进去了!?别急，这是没有防护的理想状态下，这么好猜银行就混不下去了。要想悄悄地进去，首先要知道这里的SQL语句时如何构造的。<br><code>SELECT * FROM USERS WHERE USERNAME=&#39;?&#39; and PASSWORD=&#39;?&#39; limit 1,1</code><br>&emsp;&emsp;正常情况下的登陆语句都如上所示，但是生活中在这之前进行了诸多的过滤，层层的防护，现在从第一步开始，向一个没有任何防护的页面下手。但是生活中也有很多企业、单位，对登陆页面的security不重视，才会有如CSDN被爆出百万用户账号密码这种事情发生。不废话了。<br>&emsp;&emsp;根据上面的SQL语句，可以轻松写出:<br><code>SELECT * FROM USERS WHERE USERNAME=&#39;admin&#39; or &#39;1=1&#39; and PASSWORD=&#39;?&#39; limit 1,1</code><br>&emsp;&emsp;构造永真式，以admin登陆成功，这里构造方式很多，可以连password一起用上。<br><img src="http://i.imgur.com/Bib1fmS.png" alt=""></p>
+<h4 id="less-12-POST-Error-Based-Double-quotes-String-with-twist"><a href="#less-12-POST-Error-Based-Double-quotes-String-with-twist" class="headerlink" title="less-12 POST - Error Based - Double quotes- String -with twist"></a>less-12 POST - Error Based - Double quotes- String -with twist</h4><p>&emsp;&emsp;先用双引号测试，可以看到，还需要括号<br><img src="http://i.imgur.com/ezQiQTV.png" alt=""><br>&emsp;&emsp;在username这里作为注入点的话，语句比较多，因为要闭合’”)’，同理password也行。<br><img src="http://i.imgur.com/mWE5adv.png" alt=""><br>最后的‘1=1’也不需要。这里却是以Dump登陆的，说明’admin’改为任意字符也可以，因为可以使用注释符，简化后可为<code>uname=&quot;)or 1=1# &amp;passwd=</code>。如果想以admin登入还不知道怎么写。</p>
 
       
     </div>
@@ -513,6 +516,10 @@
                   <a href="http://example.com/" title="Title" target="_blank">Title</a>
                 </li>
               
+                <li class="links-of-blogroll-item">
+                  <a href="http://showlinkroom.me/" title="l1nk3dHouse" target="_blank">l1nk3dHouse</a>
+                </li>
+              
             </ul>
           </div>
         
@@ -532,7 +539,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#less-11-POST-Error-Based-Single-quotes-String"><span class="nav-number">1.</span> <span class="nav-text">less-11 POST - Error Based - Single quotes- String</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#less-11-POST-Error-Based-Single-quotes-String"><span class="nav-number">1.</span> <span class="nav-text">less-11 POST - Error Based - Single quotes- String</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-12-POST-Error-Based-Double-quotes-String-with-twist"><span class="nav-number">2.</span> <span class="nav-text">less-12 POST - Error Based - Double quotes- String -with twist</span></a></li></ol></div>
             
 
           </div>
