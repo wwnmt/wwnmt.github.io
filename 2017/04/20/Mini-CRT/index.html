@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="wwNan" />
+  <meta name="keywords" content="运行库," />
 
 
 
@@ -87,15 +87,17 @@
 
 
 
-<meta name="description" content="手术进行中…医生发现病人漏油了…于是找来了修车师傅 修车师傅称自己只会修车，不会修洗衣机">
-<meta property="og:type" content="website">
-<meta property="og:title" content="wwNan's blog">
-<meta property="og:url" content="http://www.wuweinan.top/tags/pwn/index.html">
+<meta name="description" content="实现一个迷你CRT&amp;emsp;&amp;emsp;初步学习以后会一步步完善。通过对Glibc和MSVC CRT的分析，程序不是从main开始运行，在main之前要对参数、环境变量进行设置，初始化程序的堆和I/O等,然后调用主函数main，最后清理运行后的各种资源。这些需要运行库的入口函数来实现。 Glibc入口函数分析&amp;emsp;&amp;emsp;glibc源码可以在http://www.gnu.org/sof">
+<meta name="keywords" content="运行库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mini CRT的实现">
+<meta property="og:url" content="http://www.wuweinan.top/2017/04/20/Mini-CRT/index.html">
 <meta property="og:site_name" content="wwNan's blog">
-<meta property="og:description" content="手术进行中…医生发现病人漏油了…于是找来了修车师傅 修车师傅称自己只会修车，不会修洗衣机">
+<meta property="og:description" content="实现一个迷你CRT&amp;emsp;&amp;emsp;初步学习以后会一步步完善。通过对Glibc和MSVC CRT的分析，程序不是从main开始运行，在main之前要对参数、环境变量进行设置，初始化程序的堆和I/O等,然后调用主函数main，最后清理运行后的各种资源。这些需要运行库的入口函数来实现。 Glibc入口函数分析&amp;emsp;&amp;emsp;glibc源码可以在http://www.gnu.org/sof">
+<meta property="og:updated_time" content="2017-04-20T04:51:31.421Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="wwNan's blog">
-<meta name="twitter:description" content="手术进行中…医生发现病人漏油了…于是找来了修车师傅 修车师傅称自己只会修车，不会修洗衣机">
+<meta name="twitter:title" content="Mini CRT的实现">
+<meta name="twitter:description" content="实现一个迷你CRT&amp;emsp;&amp;emsp;初步学习以后会一步步完善。通过对Glibc和MSVC CRT的分析，程序不是从main开始运行，在main之前要对参数、环境变量进行设置，初始化程序的堆和I/O等,然后调用主函数main，最后清理运行后的各种资源。这些需要运行库的入口函数来实现。 Glibc入口函数分析&amp;emsp;&amp;emsp;glibc源码可以在http://www.gnu.org/sof">
 
 
 
@@ -123,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://www.wuweinan.top/tags/pwn/"/>
+  <link rel="canonical" href="http://www.wuweinan.top/2017/04/20/Mini-CRT/"/>
 
 
 
 
 
-  <title> 标签: pwn | wwNan's blog </title>
+  <title> Mini CRT的实现 | wwNan's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -154,7 +156,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -248,46 +250,161 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        pwn
-        <small>标签</small>
-      </h2>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.wuweinan.top/2017/04/20/Mini-CRT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Weinan Wu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://i.imgur.com/umimEoA.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wwNan's blog">
+    </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Mini CRT的实现
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-20T11:16:10+08:00">
+                2017-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <h1 id="实现一个迷你CRT"><a href="#实现一个迷你CRT" class="headerlink" title="实现一个迷你CRT"></a>实现一个迷你CRT</h1><p>&emsp;&emsp;初步学习以后会一步步完善。通过对Glibc和MSVC CRT的分析，程序不是从main开始运行，在main之前要对参数、环境变量进行设置，初始化程序的堆和I/O等,然后调用主函数main，最后清理运行后的各种资源。这些需要运行库的入口函数来实现。</p>
+<h3 id="Glibc入口函数分析"><a href="#Glibc入口函数分析" class="headerlink" title="Glibc入口函数分析"></a>Glibc入口函数分析</h3><p>&emsp;&emsp;glibc源码可以在<a href="http://www.gnu.org/software/libc/sources.html" title="这里" target="_blank" rel="external">http://www.gnu.org/software/libc/sources.html</a>下载，相关文档在<a href="http://www.gnu.org/software/libc/manual/html_mono/libc.html" title="这里" target="_blank" rel="external">http://www.gnu.org/software/libc/manual/html_mono/libc.html</a>。根据静态glibc和动态glibc、用于可执行文件和共享库，可以有四种组合。</p>
+<h4 id="基于静态-可执行文件分析"><a href="#基于静态-可执行文件分析" class="headerlink" title="基于静态/可执行文件分析"></a>基于静态/可执行文件分析</h4><h3 id="关键功能"><a href="#关键功能" class="headerlink" title="关键功能"></a>关键功能</h3><blockquote>
+<p>入口函数<br>初始化<br>堆管理<br>基本I/O<br>C++功能</p>
+</blockquote>
+<p>### </p>
 
-      <h1 class="post-title">
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/2017/04/11/pwnable-kr学习pwn-虽然是从零开始/" itemprop="url">
-              
-                <span itemprop="name">pwnable.kr学习pwn--虽然是从零开始</span>
-              
-            </a>
+
+      
+    </div>
+
+    <div>
+      
         
-      </h1>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-11T13:56:15+08:00"
-              content="2017-04-11" >
-          04-11
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/运行库/" rel="tag"># 运行库</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/18/SQL-lab-writeup-POST篇/" rel="prev" title="SQL-lab writeup POST篇">
+                SQL-lab writeup POST篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </div>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -295,6 +412,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -314,8 +435,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://i.imgur.com/umimEoA.png"
@@ -397,6 +527,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#实现一个迷你CRT"><span class="nav-number">1.</span> <span class="nav-text">实现一个迷你CRT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Glibc入口函数分析"><span class="nav-number">1.0.1.</span> <span class="nav-text">Glibc入口函数分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于静态-可执行文件分析"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">基于静态/可执行文件分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键功能"><span class="nav-number">1.0.2.</span> <span class="nav-text">关键功能</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -513,6 +659,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
