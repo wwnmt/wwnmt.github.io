@@ -94,7 +94,7 @@
 <meta property="og:url" content="http://www.wuweinan.top/2017/04/27/shellcode学习/index.html">
 <meta property="og:site_name" content="wwNan's blog">
 <meta property="og:description" content="关于Shellcode的知识和实践&amp;emsp;&amp;emsp;平常都是使用网上的shellcode，现在学一学怎么写shellcode和shellcode的艺术。 jmp esp&amp;emsp;&amp;emsp;缓冲区大小不足以塞下shellcode或无法精确定位到shellcode时，可以利用esp来作为一个跳板。esp中地址不会被破坏而且在函数返回时，esp指向返回地址的下一个位置。所以把shellcode">
-<meta property="og:updated_time" content="2017-04-27T07:25:12.225Z">
+<meta property="og:updated_time" content="2017-04-27T07:26:05.365Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shellcode学习">
 <meta name="twitter:description" content="关于Shellcode的知识和实践&amp;emsp;&amp;emsp;平常都是使用网上的shellcode，现在学一学怎么写shellcode和shellcode的艺术。 jmp esp&amp;emsp;&amp;emsp;缓冲区大小不足以塞下shellcode或无法精确定位到shellcode时，可以利用esp来作为一个跳板。esp中地址不会被破坏而且在函数返回时，esp指向返回地址的下一个位置。所以把shellcode">
@@ -350,7 +350,7 @@
 <blockquote>
 <p>FS为TEB的基址，基址+0x30放着PEB指针<br>PEB中偏移0X0C放着PEB_LDR_DATA结构体的指针<br>PEB_LDR_DATA偏移0X1C是指向模块初始化链表的指针<br>模块初始化链表第一个结点是ntdll.dll,第二个是kernell.dll，以此类推<br>找到kernel.dll后，基址加0x08是在加载基地址(1)，从加载基址偏移0X3C是PE头<br>PE头偏移0x78是函数导出表的指针，根据导出函数序号可以找到相应的函数偏移(2)<br>API的地址为(1)+(2)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mov ebx,fs:[edx+0x30]	//PEB</div><div class="line">mov ecx,[ebx+0x0C]	//PLD</div><div class="line">mov ecx,[ecx+0x1C]	//list</div><div class="line">mov ecx,[ecx]		//kernel.dll entry</div><div class="line">mov ebp,[ecx+0x08]	//base address</div></pre></td></tr></table></figure></p>
 </blockquote>
-<h2 id="根据书，实现允许外部网络连接的shell的shellcode"><a href="#根据书，实现允许外部网络连接的shell的shellcode" class="headerlink" title="根据书，实现允许外部网络连接的shell的shellcode"></a>根据书，实现允许外部网络连接的shell的shellcode</h2>
+<h2 id="实现允许外部网络连接的shell的shellcode"><a href="#实现允许外部网络连接的shell的shellcode" class="headerlink" title="实现允许外部网络连接的shell的shellcode"></a>实现允许外部网络连接的shell的shellcode</h2>
       
     </div>
 
@@ -545,7 +545,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于Shellcode的知识和实践"><span class="nav-number">1.</span> <span class="nav-text">关于Shellcode的知识和实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#jmp-esp"><span class="nav-number">1.1.</span> <span class="nav-text">jmp esp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态定位API"><span class="nav-number">1.2.</span> <span class="nav-text">动态定位API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#根据书，实现允许外部网络连接的shell的shellcode"><span class="nav-number">1.3.</span> <span class="nav-text">根据书，实现允许外部网络连接的shell的shellcode</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于Shellcode的知识和实践"><span class="nav-number">1.</span> <span class="nav-text">关于Shellcode的知识和实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#jmp-esp"><span class="nav-number">1.1.</span> <span class="nav-text">jmp esp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态定位API"><span class="nav-number">1.2.</span> <span class="nav-text">动态定位API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现允许外部网络连接的shell的shellcode"><span class="nav-number">1.3.</span> <span class="nav-text">实现允许外部网络连接的shell的shellcode</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wuweinan.top/"/>
-  <updated>2017-04-27T07:25:12.225Z</updated>
+  <updated>2017-04-27T07:26:05.365Z</updated>
   <id>http://www.wuweinan.top/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.wuweinan.top/2017/04/27/shellcode%E5%AD%A6%E4%B9%A0/"/>
     <id>http://www.wuweinan.top/2017/04/27/shellcode学习/</id>
     <published>2017-04-27T05:51:57.000Z</published>
-    <updated>2017-04-27T07:25:12.225Z</updated>
+    <updated>2017-04-27T07:26:05.365Z</updated>
     
     <content type="html"><![CDATA[<h1 id="关于Shellcode的知识和实践"><a href="#关于Shellcode的知识和实践" class="headerlink" title="关于Shellcode的知识和实践"></a>关于Shellcode的知识和实践</h1><p>&emsp;&emsp;平常都是使用网上的shellcode，现在学一学怎么写shellcode和shellcode的艺术。</p>
 <h2 id="jmp-esp"><a href="#jmp-esp" class="headerlink" title="jmp esp"></a>jmp esp</h2><p>&emsp;&emsp;缓冲区大小不足以塞下shellcode或无法精确定位到shellcode时，可以利用esp来作为一个跳板。esp中地址不会被破坏而且在函数返回时，esp指向返回地址的下一个位置。所以把shellcode放在返回地址之后，函数返回时先去执行jmp esp或call esp等指令，之后正好跳进shellcode。可以从和程序一起被加载进内存的动态链接库中获取jmp esp的地址，kernel32.dll,user32.dll等。以下代码可以获取地址。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">#include&lt;Windows.h&gt;</div><div class="line">#include&lt;stdio.h&gt;</div><div class="line">#define DLL_NAME &quot;user32.dll&quot;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	BYTE* ptr;</div><div class="line">	int position, address;</div><div class="line">	HINSTANCE handle;</div><div class="line">	BOOL done_flag = FALSE;</div><div class="line">	handle = LoadLibrary(DLL_NAME);</div><div class="line">	if (!handle)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;load error !\n&quot;);</div><div class="line">		exit(0);</div><div class="line">	&#125;</div><div class="line">	ptr = (BYTE*)handle;</div><div class="line"></div><div class="line">	for (position = 0; !done_flag; position++)</div><div class="line">	&#123;</div><div class="line"></div><div class="line">			if (ptr[position] == 0xFF &amp;&amp; ptr[position + 1] == 0xE4)</div><div class="line">			&#123;</div><div class="line">				//0xFFE4 jmp esp</div><div class="line">				address = (int)ptr + position;</div><div class="line">				printf(&quot;OPCODE found at 0x%x\n&quot;, address);</div><div class="line">			&#125;</div><div class="line">	&#125;</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -30,7 +30,7 @@
 <blockquote>
 <p>FS为TEB的基址，基址+0x30放着PEB指针<br>PEB中偏移0X0C放着PEB_LDR_DATA结构体的指针<br>PEB_LDR_DATA偏移0X1C是指向模块初始化链表的指针<br>模块初始化链表第一个结点是ntdll.dll,第二个是kernell.dll，以此类推<br>找到kernel.dll后，基址加0x08是在加载基地址(1)，从加载基址偏移0X3C是PE头<br>PE头偏移0x78是函数导出表的指针，根据导出函数序号可以找到相应的函数偏移(2)<br>API的地址为(1)+(2)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mov ebx,fs:[edx+0x30]	//PEB</div><div class="line">mov ecx,[ebx+0x0C]	//PLD</div><div class="line">mov ecx,[ecx+0x1C]	//list</div><div class="line">mov ecx,[ecx]		//kernel.dll entry</div><div class="line">mov ebp,[ecx+0x08]	//base address</div></pre></td></tr></table></figure></p>
 </blockquote>
-<h2 id="根据书，实现允许外部网络连接的shell的shellcode"><a href="#根据书，实现允许外部网络连接的shell的shellcode" class="headerlink" title="根据书，实现允许外部网络连接的shell的shellcode"></a>根据书，实现允许外部网络连接的shell的shellcode</h2>]]></content>
+<h2 id="实现允许外部网络连接的shell的shellcode"><a href="#实现允许外部网络连接的shell的shellcode" class="headerlink" title="实现允许外部网络连接的shell的shellcode"></a>实现允许外部网络连接的shell的shellcode</h2>]]></content>
     
     <summary type="html">
     
