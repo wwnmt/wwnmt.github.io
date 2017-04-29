@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wuweinan.top/"/>
-  <updated>2017-04-29T11:35:11.215Z</updated>
+  <updated>2017-04-29T11:38:14.220Z</updated>
   <id>http://www.wuweinan.top/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.wuweinan.top/2017/04/29/%E5%A0%86%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/"/>
     <id>http://www.wuweinan.top/2017/04/29/堆基础学习/</id>
     <published>2017-04-29T08:54:52.000Z</published>
-    <updated>2017-04-29T11:35:11.215Z</updated>
+    <updated>2017-04-29T11:38:14.220Z</updated>
     
     <content type="html"><![CDATA[<p>&emsp;&emsp;从《0day安全：软件漏洞分析技术》学习堆溢出知识。这学期开始学习操作系统，结合课上老师讲的内容，在写过CRT中的heap初始化程序后，对堆的基础知识有了一定了解，这里借助0day这本书里的代码学习如何调试堆等方法。环境为WinXPSP3,VC++6.0,release版本，代码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">#include&lt;Windows.h&gt;</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	HLOCAL h1, h2, h3, h4, h5, h6;</div><div class="line">	HANDLE hp;</div><div class="line">	//创建一个堆，0x1000 ~ 0x10000</div><div class="line">	hp = HeapCreate(0, 0x1000, 0x10000); </div><div class="line">	_asm int 3</div><div class="line"></div><div class="line">	//对分配的空间进行清零</div><div class="line">	h1 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 3);</div><div class="line">	h2 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 5);</div><div class="line">	h3 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 6);</div><div class="line">	h4 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);</div><div class="line">	h5 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 19);</div><div class="line">	h6 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 24);</div><div class="line"></div><div class="line">	HeapFree(hp, 0, h1);</div><div class="line">	HeapFree(hp, 0, h3);</div><div class="line">	HeapFree(hp, 0, h4);</div><div class="line">	HeapFree(hp, 0, h5);</div><div class="line"></div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="寻找内存中的堆"><a href="#寻找内存中的堆" class="headerlink" title="寻找内存中的堆"></a>寻找内存中的堆</h2><p>&emsp;&emsp;借助程序中的断点，使用OllyICE进行调试，在断点int 3 0x40101D处停住，点击M查看内存分布如下图,HeapCreate()创建的堆后返回的句柄放在eax中,因此知道0x00350000是该堆起始大小为0x1000,最大为0x10000。<br><img src="http://i.imgur.com/zYeidkj.png" alt=""></p>
@@ -50,7 +50,7 @@
     <link href="http://www.wuweinan.top/2017/04/27/shellcode%E5%AD%A6%E4%B9%A0/"/>
     <id>http://www.wuweinan.top/2017/04/27/shellcode学习/</id>
     <published>2017-04-27T05:51:57.000Z</published>
-    <updated>2017-04-27T07:26:05.365Z</updated>
+    <updated>2017-04-29T11:38:43.728Z</updated>
     
     <content type="html"><![CDATA[<h1 id="关于Shellcode的知识和实践"><a href="#关于Shellcode的知识和实践" class="headerlink" title="关于Shellcode的知识和实践"></a>关于Shellcode的知识和实践</h1><p>&emsp;&emsp;平常都是使用网上的shellcode，现在学一学怎么写shellcode和shellcode的艺术。</p>
 <h2 id="jmp-esp"><a href="#jmp-esp" class="headerlink" title="jmp esp"></a>jmp esp</h2><p>&emsp;&emsp;缓冲区大小不足以塞下shellcode或无法精确定位到shellcode时，可以利用esp来作为一个跳板。esp中地址不会被破坏而且在函数返回时，esp指向返回地址的下一个位置。所以把shellcode放在返回地址之后，函数返回时先去执行jmp esp或call esp等指令，之后正好跳进shellcode。可以从和程序一起被加载进内存的动态链接库中获取jmp esp的地址，kernel32.dll,user32.dll等。以下代码可以获取地址。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">#include&lt;Windows.h&gt;</div><div class="line">#include&lt;stdio.h&gt;</div><div class="line">#define DLL_NAME &quot;user32.dll&quot;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	BYTE* ptr;</div><div class="line">	int position, address;</div><div class="line">	HINSTANCE handle;</div><div class="line">	BOOL done_flag = FALSE;</div><div class="line">	handle = LoadLibrary(DLL_NAME);</div><div class="line">	if (!handle)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;load error !\n&quot;);</div><div class="line">		exit(0);</div><div class="line">	&#125;</div><div class="line">	ptr = (BYTE*)handle;</div><div class="line"></div><div class="line">	for (position = 0; !done_flag; position++)</div><div class="line">	&#123;</div><div class="line"></div><div class="line">			if (ptr[position] == 0xFF &amp;&amp; ptr[position + 1] == 0xE4)</div><div class="line">			&#123;</div><div class="line">				//0xFFE4 jmp esp</div><div class="line">				address = (int)ptr + position;</div><div class="line">				printf(&quot;OPCODE found at 0x%x\n&quot;, address);</div><div class="line">			&#125;</div><div class="line">	&#125;</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -70,6 +70,8 @@
     
     
       <category term="pwn" scheme="http://www.wuweinan.top/tags/pwn/"/>
+    
+      <category term="笔记" scheme="http://www.wuweinan.top/tags/%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
@@ -120,7 +122,7 @@
     <link href="http://www.wuweinan.top/2017/04/18/SQL-lab-writeup-POST%E7%AF%87/"/>
     <id>http://www.wuweinan.top/2017/04/18/SQL-lab-writeup-POST篇/</id>
     <published>2017-04-18T06:33:05.000Z</published>
-    <updated>2017-04-19T09:10:56.341Z</updated>
+    <updated>2017-04-29T11:37:52.528Z</updated>
     
     <content type="html"><![CDATA[<h4 id="less-11-POST-Error-Based-Single-quotes-String"><a href="#less-11-POST-Error-Based-Single-quotes-String" class="headerlink" title="less-11 POST - Error Based - Single quotes- String"></a>less-11 POST - Error Based - Single quotes- String</h4><p><img src="http://i.imgur.com/FLUDN4S.png" alt=""></p>
 <p>&emsp;&emsp;嗯！熟悉的登陆界面，没有账号密码怎么办？尝试登陆一下，admin admin。进去了!?别急，这是没有防护的理想状态下，这么好猜银行就混不下去了。要想悄悄地进去，首先要知道这里的SQL语句时如何构造的。<br><code>SELECT * FROM USERS WHERE USERNAME=&#39;?&#39; and PASSWORD=&#39;?&#39; limit 1,1</code><br>&emsp;&emsp;正常情况下的登陆语句都如上所示，但是生活中在这之前进行了诸多的过滤，层层的防护，现在从第一步开始，向一个没有任何防护的页面下手。但是生活中也有很多企业、单位，对登陆页面的security不重视，才会有如CSDN被爆出百万用户账号密码这种事情发生。不废话了。<br>&emsp;&emsp;根据上面的SQL语句，可以轻松写出:<br><code>SELECT * FROM USERS WHERE USERNAME=&#39;admin&#39; or &#39;1=1&#39; and PASSWORD=&#39;?&#39; limit 1,1</code><br>&emsp;&emsp;构造永真式，以admin登陆成功，这里构造方式很多，可以连password一起用上。<br><img src="http://i.imgur.com/Bib1fmS.png" alt=""></p>
@@ -135,6 +137,8 @@
     
     
       <category term="sql" scheme="http://www.wuweinan.top/tags/sql/"/>
+    
+      <category term="writeup" scheme="http://www.wuweinan.top/tags/writeup/"/>
     
   </entry>
   
@@ -188,7 +192,7 @@
     <link href="http://www.wuweinan.top/2017/04/11/pwnable-kr%E5%AD%A6%E4%B9%A0pwn-%E8%99%BD%E7%84%B6%E6%98%AF%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B/"/>
     <id>http://www.wuweinan.top/2017/04/11/pwnable-kr学习pwn-虽然是从零开始/</id>
     <published>2017-04-11T05:56:15.000Z</published>
-    <updated>2017-04-24T07:22:58.279Z</updated>
+    <updated>2017-04-29T11:37:05.544Z</updated>
     
     <content type="html"><![CDATA[<h2 id="fd"><a href="#fd" class="headerlink" title="fd"></a>fd</h2><p>连入后，可以看到三个文件fd  fd.c  flag。查看fd.c源码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdlib.h&gt;  </div><div class="line">#include &lt;string.h&gt;  </div><div class="line">char buf[32];  </div><div class="line">int main(int argc, char* argv[], char* envp[])&#123;  </div><div class="line">    if(argc&lt;2)&#123;  </div><div class="line">        printf(&quot;pass argv[1] a number\n&quot;);  </div><div class="line">        return 0;  </div><div class="line">    &#125;  </div><div class="line">    int fd = atoi( argv[1] ) - 0x1234;  </div><div class="line">    int len = 0;  </div><div class="line">    len = read(fd, buf, 32);  </div><div class="line">    if(!strcmp(&quot;LETMEWIN\n&quot;, buf))&#123;  </div><div class="line">        printf(&quot;good job :)\n&quot;);  </div><div class="line">        system(&quot;/bin/cat flag&quot;);  </div><div class="line">        exit(0);  </div><div class="line">    &#125;  </div><div class="line">    printf(&quot;learn about Linux file IO\n&quot;);  </div><div class="line">    return 0;  </div><div class="line">  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>只要把fd设置为0，即便准输入文件的文件描述符，然后读入的内容和”LETMEWIN\n”相同就可得到flag</p>
@@ -237,6 +241,8 @@
     
       <category term="pwn" scheme="http://www.wuweinan.top/tags/pwn/"/>
     
+      <category term="writeup" scheme="http://www.wuweinan.top/tags/writeup/"/>
+    
   </entry>
   
   <entry>
@@ -244,7 +250,7 @@
     <link href="http://www.wuweinan.top/2017/04/05/SQL-lab-writeup/"/>
     <id>http://www.wuweinan.top/2017/04/05/SQL-lab-writeup/</id>
     <published>2017-04-05T06:46:12.000Z</published>
-    <updated>2017-04-24T05:47:17.021Z</updated>
+    <updated>2017-04-29T11:37:37.776Z</updated>
     
     <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这里的练习对象是sql-lab，是一个印度大佬完成后上传到github上的练习。所以通过<a href="https://github.com/Audi-1/sqli-labs" target="_blank" rel="external">https://github.com/Audi-1/sqli-labs</a>下载，下面是简单的安装教程。</p>
 <h2 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h2><blockquote>
@@ -314,6 +320,8 @@
     
     
       <category term="sql" scheme="http://www.wuweinan.top/tags/sql/"/>
+    
+      <category term="writeup" scheme="http://www.wuweinan.top/tags/writeup/"/>
     
   </entry>
   
