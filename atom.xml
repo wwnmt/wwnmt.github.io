@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wuweinan.top/"/>
-  <updated>2017-04-29T11:30:16.254Z</updated>
+  <updated>2017-04-29T11:35:11.215Z</updated>
   <id>http://www.wuweinan.top/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.wuweinan.top/2017/04/29/%E5%A0%86%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/"/>
     <id>http://www.wuweinan.top/2017/04/29/堆基础学习/</id>
     <published>2017-04-29T08:54:52.000Z</published>
-    <updated>2017-04-29T11:30:16.254Z</updated>
+    <updated>2017-04-29T11:35:11.215Z</updated>
     
     <content type="html"><![CDATA[<p>&emsp;&emsp;从《0day安全：软件漏洞分析技术》学习堆溢出知识。这学期开始学习操作系统，结合课上老师讲的内容，在写过CRT中的heap初始化程序后，对堆的基础知识有了一定了解，这里借助0day这本书里的代码学习如何调试堆等方法。环境为WinXPSP3,VC++6.0,release版本，代码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">#include&lt;Windows.h&gt;</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	HLOCAL h1, h2, h3, h4, h5, h6;</div><div class="line">	HANDLE hp;</div><div class="line">	//创建一个堆，0x1000 ~ 0x10000</div><div class="line">	hp = HeapCreate(0, 0x1000, 0x10000); </div><div class="line">	_asm int 3</div><div class="line"></div><div class="line">	//对分配的空间进行清零</div><div class="line">	h1 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 3);</div><div class="line">	h2 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 5);</div><div class="line">	h3 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 6);</div><div class="line">	h4 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);</div><div class="line">	h5 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 19);</div><div class="line">	h6 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 24);</div><div class="line"></div><div class="line">	HeapFree(hp, 0, h1);</div><div class="line">	HeapFree(hp, 0, h3);</div><div class="line">	HeapFree(hp, 0, h4);</div><div class="line">	HeapFree(hp, 0, h5);</div><div class="line"></div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="寻找内存中的堆"><a href="#寻找内存中的堆" class="headerlink" title="寻找内存中的堆"></a>寻找内存中的堆</h2><p>&emsp;&emsp;借助程序中的断点，使用OllyICE进行调试，在断点int 3 0x40101D处停住，点击M查看内存分布如下图,HeapCreate()创建的堆后返回的句柄放在eax中,因此知道0x00350000是该堆起始大小为0x1000,最大为0x10000。<br><img src="http://i.imgur.com/zYeidkj.png" alt=""></p>
@@ -38,6 +38,10 @@
     
     
       <category term="pwn" scheme="http://www.wuweinan.top/tags/pwn/"/>
+    
+      <category term="heap" scheme="http://www.wuweinan.top/tags/heap/"/>
+    
+      <category term="笔记" scheme="http://www.wuweinan.top/tags/%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
