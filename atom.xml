@@ -155,29 +155,27 @@
     <link href="http://www.wuweinan.top/2017/04/18/linux-C%E5%87%BD%E6%95%B0%E8%AE%B0%E5%BD%95/"/>
     <id>http://www.wuweinan.top/2017/04/18/linux-C函数记录/</id>
     <published>2017-04-18T04:43:35.000Z</published>
-    <updated>2017-05-01T06:15:12.745Z</updated>
+    <updated>2017-05-01T06:18:05.830Z</updated>
     
     <content type="html"><![CDATA[<p>&emsp;&emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。<br><a id="more"></a></p>
 <h2 id="不带缓存的文件I-O类"><a href="#不带缓存的文件I-O类" class="headerlink" title="不带缓存的文件I/O类"></a>不带缓存的文件I/O类</h2><p>&emsp;&emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里记录的主要是不带缓存的open、read等I/O函数,每一个都调用一个系统调用。linux以”int 80”进入系统调用，根据eax的值，即调用号在一个单位偏移量为4字节的系统调用表中寻找是哪个系统调用，如eax=0时是sys_exit。ebx,ecx,edx,esi,edi,ebp六个寄存器用来传递参数，在进入内核态时，会把六个寄存器的值依次入栈，一方面把寄存器空出来，另一方面系统调用函数可以直接在栈上取参数。</p>
-<h3 id="1-int-open-const-char-pathname-in-oflag-mode-t-mode"><a href="#1-int-open-const-char-pathname-in-oflag-mode-t-mode" class="headerlink" title="1. int  open(const char* pathname, in oflag, //mode_t mode);"></a>1. <strong>int  open(const char* pathname, in oflag, //mode_t mode);</strong></h3><p> #include “sys/types.h” </p>
+<h3 id="int-open-const-char-pathname-in-oflag-mode-t-mode"><a href="#int-open-const-char-pathname-in-oflag-mode-t-mode" class="headerlink" title="int  open(const char* pathname, in oflag, //mode_t mode);"></a>int  open(const char* pathname, in oflag, //mode_t mode);</h3><p> #include “sys/types.h” </p>
 <p> #include “sys/stat.h” </p>
 <p> #include “fcntl.h”<br>//文件名，O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_APPEND，创建文件时使用第三参数<br>//打开、创建文件，返回文件描述符</p>
-<h3 id="1-int-close-int-fd"><a href="#1-int-close-int-fd" class="headerlink" title="1. int  close(int fd);"></a>1. <strong>int  close(int fd);</strong></h3><p> #include “unistd.h”<br>//关闭文件</p>
-<h3 id="1-off-t-lseek-int-fd-off-t-offset-int-whence"><a href="#1-off-t-lseek-int-fd-off-t-offset-int-whence" class="headerlink" title="1. off_t  lseek(int fd, off_t offset, int whence);"></a>1. <strong>off_t  lseek(int fd, off_t offset, int whence);</strong></h3><p> #include “sys/types.h” </p>
-<p> #include “unistd.h”<br>//fd, 偏移, SEEK_SET(文件头) | SEEK_CUR(当前) | SEEK_END(末尾)<br>//设置文件位移量，偏移量大于文件长度时，下一次写会延长该文件</p>
+<h3 id="int-close-int-fd"><a href="#int-close-int-fd" class="headerlink" title="int  close(int fd);"></a>int  close(int fd);</h3><p>#include “unistd.h”<br>//关闭文件</p>
+<h3 id="off-t-lseek-int-fd-off-t-offset-int-whence"><a href="#off-t-lseek-int-fd-off-t-offset-int-whence" class="headerlink" title="off_t  lseek(int fd, off_t offset, int whence);"></a>off_t  lseek(int fd, off_t offset, int whence);</h3><p>#include “sys/types.h” </p>
+<p>#include “unistd.h”<br>//fd, 偏移, SEEK_SET(文件头) | SEEK_CUR(当前) | SEEK_END(末尾)<br>//设置文件位移量，偏移量大于文件长度时，下一次写会延长该文件</p>
+<h3 id="ssize-t-read-int-fd-void-buff-size-t-nbytes"><a href="#ssize-t-read-int-fd-void-buff-size-t-nbytes" class="headerlink" title="ssize_t  read(int fd, void *buff, size_t nbytes);"></a>ssize_t  read(int fd, void *buff, size_t nbytes);</h3><p> #include “unistd.h”<br>//返回读到的字节数，文件末尾为0，出错-1</p>
+<h3 id="ssize-t-write-int-fd-const-void-buff-size-t-nbytes"><a href="#ssize-t-write-int-fd-const-void-buff-size-t-nbytes" class="headerlink" title="ssize_t  write(int fd, const void *buff, size_t nbytes);"></a>ssize_t  write(int fd, const void *buff, size_t nbytes);</h3><p> #include “unistd.h”<br>//正常返回写入字节数，出错-1</p>
+<h3 id="int-dup-int-fd"><a href="#int-dup-int-fd" class="headerlink" title="int  dup(int fd);"></a>int  dup(int fd);</h3><p>int  dup2(int fd, int fd2)</p>
+<p> #include “unistd.h”<br>//返回当前可用文件描述符的最小值<br>//用fd2指定新的描述符数值</p>
 <ol>
-<li><p><strong>ssize_t  read(int fd, void *buff, size_t nbytes);</strong><br>#include “unistd.h”<br>//返回读到的字节数，文件末尾为0，出错-1</p>
-</li>
-<li><p><strong>ssize_t  write(int fd, const void *buff, size_t nbytes);</strong><br>#include “unistd.h”<br>//正常返回写入字节数，出错-1</p>
-</li>
-<li><p><strong>int  dup(int fd);</strong><br><strong>int  dup2(int fd, int fd2)</strong><br>#include “unistd.h”<br>//返回当前可用文件描述符的最小值<br>//用fd2指定新的描述符数值</p>
-</li>
-<li><p><strong>int  fcntl(int fd, int cmd, //int arg);</strong><br>#include “sys/types.h”<br>#include “unistd.h”<br>#include “fcntl.h”<br>返回值需要和O_ACCMODE等进行 &amp; 操作 获得结果</p>
+<li><p>**int  fcntl(int fd, int cmd, //int arg);<br>#include “sys/types.h”<br>#include “unistd.h”<br>#include “fcntl.h”<br>返回值需要和O_ACCMODE等进行 &amp; 操作 获得结果</p>
 <blockquote>
 <p>cmd=F_DUPFD 复制显存的描述符<br>cmd=F_GETFD|F_SETFD 获得/设置文件描述符标记<br>cmd=F_GETFL|F_SETFL 获得/设置文件状态标志<br>cmd=F_GETOWN|F_SETOWN 获得/设置异步I/O权<br>cmd=F_GETLK|F_SETLK/F_SETKW 获得/设置记录锁</p>
 </blockquote>
 </li>
-<li><p><strong>int  ioctl(int fd, int request,…);</strong><br>#include “unistd.h” “sys/ioctl.h”<br>//可用于文件I/O，磁带I/O，套接口I/O，终端I/O。对设备进行操作最容易的方法。</p>
+<li><p>int  ioctl(int fd, int request,…);<br>#include “unistd.h” “sys/ioctl.h”<br>//可用于文件I/O，磁带I/O，套接口I/O，终端I/O。对设备进行操作最容易的方法。</p>
 </li>
 </ol>
 <p>读/写磁盘文件时，以上函数都带有缓存机制。</p>
