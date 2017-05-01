@@ -155,17 +155,17 @@
     <link href="http://www.wuweinan.top/2017/04/18/linux-C%E5%87%BD%E6%95%B0%E8%AE%B0%E5%BD%95/"/>
     <id>http://www.wuweinan.top/2017/04/18/linux-C函数记录/</id>
     <published>2017-04-18T04:43:35.000Z</published>
-    <updated>2017-05-01T06:13:02.609Z</updated>
+    <updated>2017-05-01T06:15:12.745Z</updated>
     
     <content type="html"><![CDATA[<p>&emsp;&emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。<br><a id="more"></a></p>
 <h2 id="不带缓存的文件I-O类"><a href="#不带缓存的文件I-O类" class="headerlink" title="不带缓存的文件I/O类"></a>不带缓存的文件I/O类</h2><p>&emsp;&emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里记录的主要是不带缓存的open、read等I/O函数,每一个都调用一个系统调用。linux以”int 80”进入系统调用，根据eax的值，即调用号在一个单位偏移量为4字节的系统调用表中寻找是哪个系统调用，如eax=0时是sys_exit。ebx,ecx,edx,esi,edi,ebp六个寄存器用来传递参数，在进入内核态时，会把六个寄存器的值依次入栈，一方面把寄存器空出来，另一方面系统调用函数可以直接在栈上取参数。</p>
+<h3 id="1-int-open-const-char-pathname-in-oflag-mode-t-mode"><a href="#1-int-open-const-char-pathname-in-oflag-mode-t-mode" class="headerlink" title="1. int  open(const char* pathname, in oflag, //mode_t mode);"></a>1. <strong>int  open(const char* pathname, in oflag, //mode_t mode);</strong></h3><p> #include “sys/types.h” </p>
+<p> #include “sys/stat.h” </p>
+<p> #include “fcntl.h”<br>//文件名，O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_APPEND，创建文件时使用第三参数<br>//打开、创建文件，返回文件描述符</p>
+<h3 id="1-int-close-int-fd"><a href="#1-int-close-int-fd" class="headerlink" title="1. int  close(int fd);"></a>1. <strong>int  close(int fd);</strong></h3><p> #include “unistd.h”<br>//关闭文件</p>
+<h3 id="1-off-t-lseek-int-fd-off-t-offset-int-whence"><a href="#1-off-t-lseek-int-fd-off-t-offset-int-whence" class="headerlink" title="1. off_t  lseek(int fd, off_t offset, int whence);"></a>1. <strong>off_t  lseek(int fd, off_t offset, int whence);</strong></h3><p> #include “sys/types.h” </p>
+<p> #include “unistd.h”<br>//fd, 偏移, SEEK_SET(文件头) | SEEK_CUR(当前) | SEEK_END(末尾)<br>//设置文件位移量，偏移量大于文件长度时，下一次写会延长该文件</p>
 <ol>
-<li><p><strong>int  open(const char* pathname, in oflag, //mode_t mode);</strong><br>#include “sys/types.h”<br>#include “sys/stat.h”<br>#include “fcntl.h”<br>//文件名，O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_APPEND，创建文件时使用第三参数<br>//打开、创建文件，返回文件描述符</p>
-</li>
-<li><p><strong>int  close(int fd);</strong><br>#include “unistd.h”<br>//关闭文件</p>
-</li>
-<li><p><strong>off_t  lseek(int fd, off_t offset, int whence);</strong><br>#include “sys/types.h”<br>#include “unistd.h”<br>//fd, 偏移, SEEK_SET(文件头) | SEEK_CUR(当前) | SEEK_END(末尾)<br>//设置文件位移量，偏移量大于文件长度时，下一次写会延长该文件</p>
-</li>
 <li><p><strong>ssize_t  read(int fd, void *buff, size_t nbytes);</strong><br>#include “unistd.h”<br>//返回读到的字节数，文件末尾为0，出错-1</p>
 </li>
 <li><p><strong>ssize_t  write(int fd, const void *buff, size_t nbytes);</strong><br>#include “unistd.h”<br>//正常返回写入字节数，出错-1</p>
@@ -182,11 +182,11 @@
 </ol>
 <p>读/写磁盘文件时，以上函数都带有缓存机制。</p>
 <h2 id="文件和目录"><a href="#文件和目录" class="headerlink" title="文件和目录"></a>文件和目录</h2><ol>
-<li><p>int    stat(const char<em> pathname， struct stat</em> buf);<br>#include “sys/types.h”<br>#include “sys/stat.h”<br>//对于给定的一个pathname，stat函数返回和此命名文件有关的信息结构，ls -l 使用stat最多</p>
+<li><p><strong>int  stat(const char<em> pathname， struct stat</em> buf);</strong><br>#include “sys/types.h”<br>#include “sys/stat.h”<br>//对于给定的一个pathname，stat函数返回和此命名文件有关的信息结构，ls -l 使用stat最多</p>
 </li>
-<li><p>int  fstat(const char<em> pathname， struct stat</em> buf);<br>#include “sys/types.h”<br>#include “sys/stat.h”<br>//在文件描述符fd上，fstat函数返回和此命名文件有关的信息结构</p>
+<li><p><strong>int  fstat(const char<em> pathname， struct stat</em> buf);</strong><br>#include “sys/types.h”<br>#include “sys/stat.h”<br>//在文件描述符fd上，fstat函数返回和此命名文件有关的信息结构</p>
 </li>
-<li><p>int  lstat(const char<em> pathname， struct stat</em> buf);<br>#include “sys/types.h”<br>#include “sys/stat.h”<br>//lstat函数返回和此命名文件有关的信息结构，还可以返回符号链接的有关信息<br>//信息结构如下<br>struct stat{<br> mode_t    st_mode;    //file type &amp; mode (permisions)<br> ino_t    st_ino;        //i-node number<br> dev_t    st_dev;        //device number<br> dev_t     st_rdev;    //device number for special files<br> nlink_t    st_nlink;    //number of links<br> uid_t    st_uid;<br> gid_t    st_gid;<br> off_t    st_size;    //size in bytes, for regular files<br> time_t    st_atime;    //time of last access<br> time_t    st_mtime;    //last modification<br> time_t    st_ctime;    //last file status change<br> long     st_blksize;    //best I/O block size<br> long    st_blocks;    //number of 512b blocks allocated<br>}</p>
+<li><p><strong>int  lstat(const char<em> pathname， struct stat</em> buf);</strong><br>#include “sys/types.h”<br>#include “sys/stat.h”<br>//lstat函数返回和此命名文件有关的信息结构，还可以返回符号链接的有关信息<br>//信息结构如下<br>struct stat{<br> mode_t    st_mode;    //file type &amp; mode (permisions)<br> ino_t    st_ino;        //i-node number<br> dev_t    st_dev;        //device number<br> dev_t     st_rdev;    //device number for special files<br> nlink_t    st_nlink;    //number of links<br> uid_t    st_uid;<br> gid_t    st_gid;<br> off_t    st_size;    //size in bytes, for regular files<br> time_t    st_atime;    //time of last access<br> time_t    st_mtime;    //last modification<br> time_t    st_ctime;    //last file status change<br> long     st_blksize;    //best I/O block size<br> long    st_blocks;    //number of 512b blocks allocated<br>}</p>
 </li>
 </ol>
 ]]></content>
