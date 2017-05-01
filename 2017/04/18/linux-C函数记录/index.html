@@ -94,7 +94,7 @@
 <meta property="og:url" content="http://www.wuweinan.top/2017/04/18/linux-C函数记录/index.html">
 <meta property="og:site_name" content="wwNan's blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。">
-<meta property="og:updated_time" content="2017-05-01T06:23:37.828Z">
+<meta property="og:updated_time" content="2017-05-01T06:56:50.422Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux 函数记录">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。">
@@ -363,6 +363,18 @@
 </li>
 <li><p><strong>int  lstat(const char<em> pathname， struct stat</em> buf);</strong><br>#include “sys/types.h”<br>#include “sys/stat.h”<br>//lstat函数返回和此命名文件有关的信息结构，还可以返回符号链接的有关信息<br>//信息结构如下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">struct stat&#123;</div><div class="line">	mode_t	st_mode;	//file type &amp; mode (permisions)</div><div class="line">	ino_t	st_ino;		//i-node number</div><div class="line">	dev_t	st_dev;		//device number</div><div class="line">	dev_t 	st_rdev;	//device number for special files</div><div class="line">	nlink_t	st_nlink;	//number of links</div><div class="line">	uid_t	st_uid;		</div><div class="line">	gid_t	st_gid;</div><div class="line">	off_t	st_size;	//size in bytes, for regular files</div><div class="line">	time_t	st_atime;	//time of last access</div><div class="line">	time_t	st_mtime;	//last modification</div><div class="line">	time_t	st_ctime;	//last file status change</div><div class="line">	long 	st_blksize;	//best I/O block size</div><div class="line">	long	st_blocks;	//number of 512b blocks allocated</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><strong>#define S_ISDIR (mode) (((mode) &amp; S_IFMT) == S_IFDIR)</strong><br>//可以使用宏 S_ISREG(), S_ISDIR(), S_ISCHR(), S_ISFIFO()等确定文件类型，宏定义如上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">lstat(pathname, &amp;buf);</div><div class="line">if (S_ISREG(buf.st_mode)) </div><div class="line">	printf(&quot;regular&quot;\n);</div></pre></td></tr></table></figure>
+</li>
+<li><p><strong>int  access(const char* pathname, int mode);</strong><br>#include”unistd.h”<br>//按实际的uid和gid进行存取许可测试,mode如下<br>// R_OK 读许可<br>// W_OK 写许可<br>// X_OK 执行许可<br>// F_OK 文件是否存在</p>
+</li>
+<li><p><strong>mode_t  umask(mode_t mask);</strong><br>#include”sys/types.h”<br>#include”sys/stat.h”<br>//为进程设置文件方式创建屏蔽字，返回以前的值。相关的是9个存取许可位，S_IRUSE,S_IRGRP,S_IROTH等</p>
+</li>
+<li><p><strong>int  chmod(const char* pathname, mode_t mode);</strong><br>#include”sys/types.h”<br>#include”sys/stat.h”<br>//对指定文件，改变文件的许可权位<br>//int fchmod(int fd, mode_t mode)针对已打开的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">#include&lt;head.h&gt;</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	struct sttat statbuf;</div><div class="line">	if (stat(&quot;pathname&quot;, &amp;statbuf) &lt; 0)</div><div class="line">		error(&quot;stat error&quot;);</div><div class="line">	if (chmod(&quot;pathname&quot;, (statbuf.st_mode &amp; ~S_IXUSR) | S_ISGID) &lt; 0)</div><div class="line">		error(&quot;chmod error&quot;)</div><div class="line">	exit(0);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><strong>int  chown(const char* pathname, uid_t owner, gid_t group);</strong><br><strong>int  lchown(const char* pathname, uid_t owner, gid_t group);</strong><br><strong>int  fchown(const char* pathname, uid_t owner, gid_t group);</strong></p>
 </li>
 </ol>
 
