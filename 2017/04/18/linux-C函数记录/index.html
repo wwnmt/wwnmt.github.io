@@ -94,7 +94,7 @@
 <meta property="og:url" content="http://www.wuweinan.top/2017/04/18/linux-C函数记录/index.html">
 <meta property="og:site_name" content="wwNan's blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。">
-<meta property="og:updated_time" content="2017-05-01T03:26:02.107Z">
+<meta property="og:updated_time" content="2017-05-01T05:51:44.762Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux 函数记录">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。">
@@ -333,31 +333,37 @@
 
       
         <p>&emsp;&emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。<br><a id="more"></a></p>
-<h3 id="不带缓存的文件I-O类"><a href="#不带缓存的文件I-O类" class="headerlink" title="不带缓存的文件I/O类"></a>不带缓存的文件I/O类</h3><p>&emsp;&emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里记录的主要是不带缓存的open、read等I/O函数,每一个都调用一个系统调用。linux以”int 80”进入系统调用，根据eax的值，即调用号在一个单位偏移量为4字节的系统调用表中寻找是哪个系统调用，如eax=0时是sys_exit。ebx,ecx,edx,esi,edi,ebp六个寄存器用来传递参数，在进入内核态时，会把六个寄存器的值依次入栈，一方面把寄存器空出来，另一方面系统调用函数可以直接在栈上取参数。</p>
+<h2 id="不带缓存的文件I-O类"><a href="#不带缓存的文件I-O类" class="headerlink" title="不带缓存的文件I/O类"></a>不带缓存的文件I/O类</h2><p>&emsp;&emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里记录的主要是不带缓存的open、read等I/O函数,每一个都调用一个系统调用。linux以”int 80”进入系统调用，根据eax的值，即调用号在一个单位偏移量为4字节的系统调用表中寻找是哪个系统调用，如eax=0时是sys_exit。ebx,ecx,edx,esi,edi,ebp六个寄存器用来传递参数，在进入内核态时，会把六个寄存器的值依次入栈，一方面把寄存器空出来，另一方面系统调用函数可以直接在栈上取参数。</p>
 <ol>
-<li><p>#include “sys/types.h” “sys/stat.h” “fcntl.h”<br><strong>int open(const char* pathname, in oflag, //mode_t mode);</strong><br>//文件名，O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_APPEND，创建文件时使用第三参数<br>//打开、创建文件，返回文件描述符</p>
+<li><strong>int open(const char* pathname, in oflag, //mode_t mode);</strong><br>#include “sys/types.h” “sys/stat.h” “fcntl.h”</li>
+</ol>
+<p>//文件名，O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_APPEND，创建文件时使用第三参数<br>//打开、创建文件，返回文件描述符</p>
+<ol>
+<li><strong>int close(int fd);</strong><br>#include “unistd.h”</li>
+</ol>
+<p>//关闭文件</p>
+<ol>
+<li><p><strong>off_t lseek(int fd, off_t offset, int whence);</strong><br>#include “sys/types.h” “unistd.h”<br>//fd, 偏移, SEEK_SET(文件头) | SEEK_CUR(当前) | SEEK_END(末尾)<br>//设置文件位移量，偏移量大于文件长度时，下一次写会延长该文件</p>
 </li>
-<li><p>#include “unistd.h”<br><strong>int close(int fd);</strong><br>//关闭文件</p>
+<li><p><strong>ssize_t read(int fd, void *buff, size_t nbytes);</strong><br>#include “unistd.h”<br>//返回读到的字节数，文件末尾为0，出错-1</p>
 </li>
-<li><p>#include “sys/types.h” “unistd.h”<br><strong>off_t lseek(int fd, off_t offset, int whence);</strong><br>//fd, 偏移, SEEK_SET(文件头) | SEEK_CUR(当前) | SEEK_END(末尾)<br>//设置文件位移量，偏移量大于文件长度时，下一次写会延长该文件</p>
+<li><p><strong>ssize_t write(int fd, const void *buff, size_t nbytes);</strong><br>#include “unistd.h”<br>//正常返回写入字节数，出错-1</p>
 </li>
-<li><p>#include “unistd.h”<br><strong>ssize_t read(int fd, void *buff, size_t nbytes);</strong><br>//返回读到的字节数，文件末尾为0，出错-1</p>
+</ol>
+<p>//复制文件描述符</p>
+<ol>
+<li><p><strong>int dup(int fd);</strong><br><strong>int dup2(int fd, int fd2)</strong><br>#include “unistd.h”<br>//返回当前可用文件描述符的最小值<br>//用fd2指定新的描述符数值</p>
 </li>
-<li><p>#include “unistd.h”<br><strong>ssize_t write(int fd, const void *buff, size_t nbytes);</strong><br>//正常返回写入字节数，出错-1</p>
-</li>
-<li><p>#include “unistd.h”<br>//复制文件描述符<br><strong>int dup(int fd);</strong><br>//返回当前可用文件描述符的最小值<br>int dup2(int fd, int fd2)<br>//用fd2指定新的描述符数值</p>
-</li>
-<li><p>#include “sys/types.h” “unistd.h” “fcntl.h”<br><strong>int fcntl(int fd, int cmd, //int arg);</strong><br>返回值需要和O_ACCMODE等进行 &amp; 操作 获得结果</p>
+<li><p><strong>int fcntl(int fd, int cmd, //int arg);</strong><br>#include “sys/types.h” “unistd.h” “fcntl.h”<br>返回值需要和O_ACCMODE等进行 &amp; 操作 获得结果</p>
 <blockquote>
 <p>cmd=F_DUPFD 复制显存的描述符<br>cmd=F_GETFD|F_SETFD 获得/设置文件描述符标记<br>cmd=F_GETFL|F_SETFL 获得/设置文件状态标志<br>cmd=F_GETOWN|F_SETOWN 获得/设置异步I/O权<br>cmd=F_GETLK|F_SETLK/F_SETKW 获得/设置记录锁</p>
 </blockquote>
 </li>
-<li><p>#include “unistd.h” “sys/ioctl.h”<br><strong>int ioctl(int fd, int request,…);</strong><br>//可用于文件I/O，磁带I/O，套接口I/O，终端I/O。对设备进行操作最容易的方法。</p>
+<li><p><strong>int ioctl(int fd, int request,…);</strong><br>#include “unistd.h” “sys/ioctl.h”<br>//可用于文件I/O，磁带I/O，套接口I/O，终端I/O。对设备进行操作最容易的方法。</p>
 </li>
 </ol>
 <p>读/写磁盘文件时，以上函数都带有缓存机制。</p>
-<p>### </p>
-
+<h2 id="文件和目录"><a href="#文件和目录" class="headerlink" title="文件和目录"></a>文件和目录</h2>
       
     </div>
 
@@ -556,7 +562,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#不带缓存的文件I-O类"><span class="nav-number">1.</span> <span class="nav-text">不带缓存的文件I/O类</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#不带缓存的文件I-O类"><span class="nav-number">1.</span> <span class="nav-text">不带缓存的文件I/O类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件和目录"><span class="nav-number">2.</span> <span class="nav-text">文件和目录</span></a></li></ol></div>
             
 
           </div>
