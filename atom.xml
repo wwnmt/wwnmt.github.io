@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wuweinan.top/"/>
-  <updated>2017-05-01T03:28:13.916Z</updated>
+  <updated>2017-05-02T04:57:34.567Z</updated>
   <id>http://www.wuweinan.top/</id>
   
   <author>
@@ -14,6 +14,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Heap溢出</title>
+    <link href="http://www.wuweinan.top/2017/05/02/Heap%E6%BA%A2%E5%87%BA/"/>
+    <id>http://www.wuweinan.top/2017/05/02/Heap溢出/</id>
+    <published>2017-05-02T03:38:03.000Z</published>
+    <updated>2017-05-02T04:57:34.567Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="堆溢出利用"><a href="#堆溢出利用" class="headerlink" title="堆溢出利用"></a>堆溢出利用</h2><p>&emsp;&emsp;堆的空表使用双向链表结构，用数据去溢出下一个堆块块首的flink和blink指针，在进行堆操作时，就有机会在任意内存的任意地址写入任意的数据。<br><a id="more"></a><br>&emsp;&emsp;当堆溢出发生时，被攻击的堆块从双向链表卸下的时候，被攻击的flink和blink，blink可以指向任意内存地址，flink构造shellcode的首地址。</p>
+<h2 id="调试中实验”DWORD-SHOOT”"><a href="#调试中实验”DWORD-SHOOT”" class="headerlink" title="调试中实验”DWORD SHOOT”"></a>调试中实验”DWORD SHOOT”</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">#include&lt;Windows.h&gt;</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	HLOCAL h1, h2, h3, h4, h5, h6;</div><div class="line">	HANDLE hp;</div><div class="line">	//0x1000 ~ 0x10000</div><div class="line">	hp = HeapCreate(0,0x1000, 0x10000); </div><div class="line">	</div><div class="line">	h1 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);</div><div class="line">	h2 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);</div><div class="line">	h3 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);</div><div class="line">	h4 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);</div><div class="line">	h5 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);</div><div class="line">	h6 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);</div><div class="line">	_asm int 3</div><div class="line">	HeapFree(hp, 0, h1);</div><div class="line">	HeapFree(hp, 0, h3);</div><div class="line">	HeapFree(hp, 0, h5);</div><div class="line"></div><div class="line">	h1 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);</div><div class="line"></div><div class="line"></div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>实验步骤:</strong></p>
+<ol>
+<li>创建堆区，申请6个大小为8字节的堆块</li>
+<li>奇数释放，防止堆合并</li>
+<li>再次申请，freelist[2]中最后一个项h5会被卸下</li>
+<li>修改h5块首指针<br>&emsp;&emsp;堆区首地址是0x00350000，申请6个8字节空间，释放h1,h3,h5后的堆块块首如下图。h1,h3,h5的状态被改为0x00，空闲，然后被链入了freelist[2]，有了前指针和后指针，h5是最后一项。再次申请一个8字节空间，h5将会被卸下，现在直接修改h5的空表指针，可以观察到DWORD SHOOT。<br><img src="http://i.imgur.com/NfEyZ2j.png" alt=""><br><img src="http://i.imgur.com/31IVAwG.png" alt=""><br>&emsp;&emsp;上图显示0x00000000是非法地址。如果把后指针改为合法地址，0x44444444江北写入该地址。我把地址改为合法地址测试后，程序无误但是并没有修改数据，可能这里系统是XPSP3，堆做了防护，无法攻击。</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;堆溢出利用&quot;&gt;&lt;a href=&quot;#堆溢出利用&quot; class=&quot;headerlink&quot; title=&quot;堆溢出利用&quot;&gt;&lt;/a&gt;堆溢出利用&lt;/h2&gt;&lt;p&gt;&amp;emsp;&amp;emsp;堆的空表使用双向链表结构，用数据去溢出下一个堆块块首的flink和blink指针，在进行堆操作时，就有机会在任意内存的任意地址写入任意的数据。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="heap" scheme="http://www.wuweinan.top/tags/heap/"/>
+    
+      <category term="pwn" scheme="http://www.wuweinan.top/tags/pwn/"/>
+    
+  </entry>
   
   <entry>
     <title>堆基础学习</title>
@@ -44,11 +75,11 @@
     </summary>
     
     
+      <category term="heap" scheme="http://www.wuweinan.top/tags/heap/"/>
+    
       <category term="pwn" scheme="http://www.wuweinan.top/tags/pwn/"/>
     
       <category term="笔记" scheme="http://www.wuweinan.top/tags/%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="heap" scheme="http://www.wuweinan.top/tags/heap/"/>
     
   </entry>
   
@@ -273,9 +304,9 @@
     </summary>
     
     
-      <category term="writeup" scheme="http://www.wuweinan.top/tags/writeup/"/>
-    
       <category term="pwn" scheme="http://www.wuweinan.top/tags/pwn/"/>
+    
+      <category term="writeup" scheme="http://www.wuweinan.top/tags/writeup/"/>
     
   </entry>
   
