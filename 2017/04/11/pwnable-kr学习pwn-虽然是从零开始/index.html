@@ -101,7 +101,9 @@
 <meta property="og:image" content="http://i.imgur.com/tPM0XPp.png">
 <meta property="og:image" content="http://i.imgur.com/BkDCX1G.png">
 <meta property="og:image" content="http://i.imgur.com/0nrZccz.png">
-<meta property="og:updated_time" content="2017-05-04T05:28:51.830Z">
+<meta property="og:image" content="http://i.imgur.com/0zvYKos.png">
+<meta property="og:image" content="http://i.imgur.com/gKCS5s0.png">
+<meta property="og:updated_time" content="2017-05-04T13:25:28.267Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pwnable.kr学习pwn--虽然是从零开始">
 <meta name="twitter:description" content="pwnable.kr">
@@ -400,6 +402,8 @@
 <blockquote>
 <p>&emsp;&emsp;虚函数表是一个函数指针表，即vtable。每一个表项都指向一个函数。任何一个包含虚函数的类都会有这样一张表。需要注意的是vtable只包含虚函数的指针，没有函数体。虚函数表既有继承性又有多态性。<br>&emsp;&emsp;当一个类有虚函数，编译器会为这个类建立一张vtable，派生类继承父类vtable中所有项。每个派生类的vtable继承了它各个基类的vtable，如果派生类重构父类的虚函数，派生类会覆写(override)了该项对应的虚函数指针，派生类vtable的该项指向覆写后的虚函数，没有覆写的话，则沿用基类的值。<br>&emsp;&emsp;在类对象的内存布局中，首先是该类的vtable指针，然后才是对象数据。在通过对象指针调用一个虚函数时，编译器生成的代码将先获取对象类的vtable指针，然后调用vtable中对应的项。</p>
 </blockquote>
+<p>&emsp;&emsp;IDA静态分析x64elf可执行文件。直接看.rodata段，可以得到woman,man继承的虚函数表。其中shell函数位于偏移0处，introduce位置偏移0x08处。在use的时候，调用introduce的方法是虚函数表指针+8，所以把虚函数指针改一下，改为当前值-0x8就可以执行shell了。这里只能覆盖man类的，虽然释放时候最后释放的是woman类，分配时第一分配的是旧woman类的内存空间，但是use的时候首先执行man类的introduce，不覆盖man类的地址的话就会报segmentfault错误，并不能执行到woman的introduce。<br><img src="http://i.imgur.com/0zvYKos.png" alt=""><br><img src="http://i.imgur.com/gKCS5s0.png" alt=""></p>
+<p>&emsp;&emsp;综上所述,<code>python -c &#39;print &quot;\x68\x15\x40\x00\x00\x00\x00\x00&#39;&quot; &gt; /tmp/uaf1</code>。另外IDA可以看到内存大小是24字节。所以执行<code>./uaf 24 /tmp/uaf1</code>，分配写两次数据再执行即可。</p>
 
       
     </div>
