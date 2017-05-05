@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wuweinan.top/"/>
-  <updated>2017-05-02T04:57:34.567Z</updated>
+  <updated>2017-05-05T09:35:32.251Z</updated>
   <id>http://www.wuweinan.top/</id>
   
   <author>
@@ -14,6 +14,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>基本算法逆向</title>
+    <link href="http://www.wuweinan.top/2017/05/05/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95%E9%80%86%E5%90%91-First-Time/"/>
+    <id>http://www.wuweinan.top/2017/05/05/基本算法逆向-First-Time/</id>
+    <published>2017-05-05T09:24:32.000Z</published>
+    <updated>2017-05-05T09:35:32.251Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="百度杯测试的基本算法逆向"><a href="#百度杯测试的基本算法逆向" class="headerlink" title="百度杯测试的基本算法逆向"></a>百度杯测试的基本算法逆向</h2><p>&emsp;&emsp;最近需要泉去看i春秋的课程，就去拿百度杯的测试题刷一下，都是不难的，然后就做出了第一次算法逆向。下面是题目给的代码。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">enc Ot7lAO72opsedkxTngbD3FhwP50x8sosAf9oLOkIpr8PN7J0Omq7nWxvgvaiRn+Tp95zcTDj</div><div class="line"></div><div class="line">import random, base64</div><div class="line">from hashlib import sha1</div><div class="line">def crypt(data, key):</div><div class="line">    x = 0</div><div class="line">    box = range(256)</div><div class="line">    for i in range(256):</div><div class="line">        x = (x + box[i] + ord(key[i % len(key)])) % 256</div><div class="line">        box[i], box[x] = box[x], box[i]</div><div class="line">    x = y = 0</div><div class="line">    enc = []</div><div class="line">    for char in data:</div><div class="line">        x = (x + 1) % 256</div><div class="line">        y = (y + box[x]) % 256</div><div class="line">        box[x], box[y] = box[y], box[x]</div><div class="line">        enc.append(chr(ord(char) ^ box[(box[x] + box[y]) % 256]))</div><div class="line">    return &apos;&apos;.join(enc)</div><div class="line">def babyencode(data, key, encode=base64.b64encode, salt_length=16):</div><div class="line">    salt = &apos;&apos;</div><div class="line">    for n in range(salt_length):</div><div class="line">        salt += chr(random.randrange(256))</div><div class="line">    data = salt + crypt(data, sha1(key + salt).digest())</div><div class="line">    if encode:</div><div class="line">        data = encode(data)</div><div class="line">    return data</div><div class="line">data = &apos;flag&#123;************************&#125;&apos;</div><div class="line">key = &apos;welcometoicqedu&apos;</div><div class="line">output = babyencode(data=data, key=key)</div><div class="line">print output</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;开始获得了flag加密后的密文enc。第一个key已经给出，密文的最后一道加密是base64，base64解密后可以得到salt，就算randrange()随机性再好也没用，box是静态生成的，然后就可以编程得到flag了。代码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python</div><div class="line"># coding=utf-8</div><div class="line">import base64</div><div class="line">from hashlib import sha1</div><div class="line"></div><div class="line">__author__ = &quot;Weinan Wu&quot;</div><div class="line"></div><div class="line">key1 = &apos;welcometoicqedu&apos;</div><div class="line">mm = &apos;Ot7lAO72opsedkxTngbD3FhwP50x8sosAf9oLOkIpr8PN7J0Omq7nWxvgvaiRn+Tp95zcTDj&apos;</div><div class="line"></div><div class="line">enc = base64.b64decode(mm)</div><div class="line">salt = enc[:16]</div><div class="line">print &apos;salt:&apos;,salt</div><div class="line">enc1 = enc[16:]</div><div class="line"></div><div class="line">key2 = sha1(key1 + salt).digest()</div><div class="line">print &apos;key:&apos;,key2</div><div class="line"></div><div class="line">x = 0</div><div class="line">box = range(256)</div><div class="line">for i in range(256):</div><div class="line">    x = (x + box[i] + ord(key2[i % len(key2)])) % 256</div><div class="line">    box[i], box[x] = box[x], box[i]</div><div class="line"></div><div class="line">data=[]</div><div class="line">for char in enc1:</div><div class="line">    data.append(int(char.encode(&quot;hex&quot;),16))</div><div class="line"></div><div class="line">x = y = 0</div><div class="line">data1 = []</div><div class="line">for char in data:</div><div class="line">    x = (x + 1) % 256</div><div class="line">    y = (y + box[x]) % 256</div><div class="line">    box[x], box[y] = box[y], box[x]</div><div class="line">    data1.append(chr(char ^ box[(box[x] + box[y]) % 256]))</div><div class="line">print &apos;&apos;.join(data1)</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;百度杯测试的基本算法逆向&quot;&gt;&lt;a href=&quot;#百度杯测试的基本算法逆向&quot; class=&quot;headerlink&quot; title=&quot;百度杯测试的基本算法逆向&quot;&gt;&lt;/a&gt;百度杯测试的基本算法逆向&lt;/h2&gt;&lt;p&gt;&amp;emsp;&amp;emsp;最近需要泉去看i春秋的课程，就去拿百
+    
+    </summary>
+    
+    
+      <category term="CTF" scheme="http://www.wuweinan.top/tags/CTF/"/>
+    
+      <category term="Reverse" scheme="http://www.wuweinan.top/tags/Reverse/"/>
+    
+  </entry>
   
   <entry>
     <title>Heap溢出</title>
