@@ -94,7 +94,7 @@
 <meta property="og:url" content="http://www.wuweinan.top/2017/04/18/linux-C函数记录/index.html">
 <meta property="og:site_name" content="wwNan's blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。">
-<meta property="og:updated_time" content="2017-05-01T06:56:50.422Z">
+<meta property="og:updated_time" content="2017-05-07T13:29:26.826Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux 函数记录">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。">
@@ -352,7 +352,7 @@
 <p>cmd=F_DUPFD 复制显存的描述符<br>cmd=F_GETFD|F_SETFD 获得/设置文件描述符标记<br>cmd=F_GETFL|F_SETFL 获得/设置文件状态标志<br>cmd=F_GETOWN|F_SETOWN 获得/设置异步I/O权<br>cmd=F_GETLK|F_SETLK/F_SETKW 获得/设置记录锁</p>
 </blockquote>
 </li>
-<li><p><strong>int  ioctl(int fd, int request,…);</strong><br>#include “unistd.h” “sys/ioctl.h”<br>//可用于文件I/O，磁带I/O，套接口I/O，终端I/O。对设备进行操作最容易的方法。</p>
+<li><p><strong>int  ioctl(int fd, int request,…);</strong><br>#include “unistd.h”<br>#include “sys/ioctl.h”<br>//可用于文件I/O，磁带I/O，套接口I/O，终端I/O。对设备进行操作最容易的方法。</p>
 </li>
 </ol>
 <p>读/写磁盘文件时，以上函数都带有缓存机制。</p>
@@ -374,7 +374,9 @@
 <li><p><strong>int  chmod(const char* pathname, mode_t mode);</strong><br>#include”sys/types.h”<br>#include”sys/stat.h”<br>//对指定文件，改变文件的许可权位<br>//int fchmod(int fd, mode_t mode)针对已打开的文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">#include&lt;head.h&gt;</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	struct sttat statbuf;</div><div class="line">	if (stat(&quot;pathname&quot;, &amp;statbuf) &lt; 0)</div><div class="line">		error(&quot;stat error&quot;);</div><div class="line">	if (chmod(&quot;pathname&quot;, (statbuf.st_mode &amp; ~S_IXUSR) | S_ISGID) &lt; 0)</div><div class="line">		error(&quot;chmod error&quot;)</div><div class="line">	exit(0);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
-<li><p><strong>int  chown(const char* pathname, uid_t owner, gid_t group);</strong><br><strong>int  lchown(const char* pathname, uid_t owner, gid_t group);</strong><br><strong>int  fchown(const char* pathname, uid_t owner, gid_t group);</strong></p>
+<li><p><strong>int  chown(const char* pathname, uid_t owner, gid_t group);</strong><br><strong>int  lchown(const char* pathname, uid_t owner, gid_t group);</strong><br><strong>int  fchown(const char* pathname, uid_t owner, gid_t group);</strong><br>#include “unistd.h”<br>#include “sys/types.h”<br>//不同的系统对于修改文件拥有者限制不同，用户修改文件所有者的话可以拜托磁盘空间限额对他们的限制<br>//若为符号连接则改变符号连接的所有权，不更改指向文件所有权</p>
+</li>
+<li><p><strong>int truncate(const char* pathname, off_t length);</strong><br><strong>int ftruncate(int fd, off_t length);</strong><br>#include “sys/types.h”<br>#include “unistd.h”<br>//用于文件截断 O_TRUNC 可以把文件的长度截短为0<br>//如果length大于以前文件长度，后果与操作系统有关。</p>
 </li>
 </ol>
 
@@ -516,7 +518,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
