@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wuweinan.top/"/>
-  <updated>2017-05-13T13:04:04.120Z</updated>
+  <updated>2017-05-13T13:53:45.382Z</updated>
   <id>http://www.wuweinan.top/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.wuweinan.top/2017/05/12/python-scanner/"/>
     <id>http://www.wuweinan.top/2017/05/12/python-scanner/</id>
     <published>2017-05-12T10:22:15.000Z</published>
-    <updated>2017-05-13T13:04:04.120Z</updated>
+    <updated>2017-05-13T13:53:45.382Z</updated>
     
     <content type="html"><![CDATA[<h2 id="端口扫描器"><a href="#端口扫描器" class="headerlink" title="端口扫描器"></a>端口扫描器</h2><p>&emsp;&emsp;端口扫描器可以侦察出目标主机开放的端口以及相应的服务程序版本，这有利于攻击者寻找漏洞，进行下一步的渗透攻击。在这里以python为基础，编写了一个可以基于多线程，多进程等的tcp协议端口扫描程序，可以探测端口开放情况以及相应服务。未来还可以在此基础上，加上更复杂的扫描类型，如各种标志位组合的tcp扫描，udp扫描，系统扫描等，就像nmap一样。但是还是推荐使用nmap这个强大的工具，自己的工具除了学习以外，在更复杂的环境下可能不适用。<br><a id="more"></a></p>
 <h2 id="基本雏形"><a href="#基本雏形" class="headerlink" title="基本雏形"></a>基本雏形</h2><p>&emsp;&emsp;nmap可以通过丰富的参数，用简单的命令完成复杂的扫描。python中有一个optparse库可以解析命令行参数，如果c也有这个就相当方便了。用法如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">import optparse</div><div class="line"></div><div class="line">#生成命令行解析器实例,当参数数小于2时，会打印下述语句</div><div class="line">parser = optparse.OptionParser(&apos;usage %prog -H &lt;target host&gt; -p &lt;port&gt;&apos;)</div><div class="line"></div><div class="line">#指定具体解析的参数</div><div class="line">parser.add_option(&apos;-H&apos;, dest=&apos;target_host&apos;, type=&apos;string&apos;, help=&apos;specify target host&apos;)</div><div class="line"></div><div class="line">#获取参数</div><div class="line">(options, args) = parser.parse_args()</div><div class="line"></div><div class="line">#使用参数</div><div class="line">print options.target_host</div></pre></td></tr></table></figure></p>
@@ -40,11 +40,11 @@
     
       <category term="python" scheme="http://www.wuweinan.top/tags/python/"/>
     
-      <category term="threading，forking" scheme="http://www.wuweinan.top/tags/threading%EF%BC%8Cforking/"/>
-    
-      <category term="scanner" scheme="http://www.wuweinan.top/tags/scanner/"/>
+      <category term="linux" scheme="http://www.wuweinan.top/tags/linux/"/>
     
       <category term="端口扫描" scheme="http://www.wuweinan.top/tags/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/"/>
+    
+      <category term="多线程" scheme="http://www.wuweinan.top/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
     
   </entry>
   
