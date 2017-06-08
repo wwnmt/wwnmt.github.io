@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。">
+<meta name="description" content="Makefile的重要性&amp;emsp;&amp;emsp;Windows下编程的大佬们请忽略这篇短文，因为Windows的IDE像一名体贴细致的英式管家为程序员完成了Makefile的工作。如果在UNIX下进行一个开发项目，一个工程中有不计其数的源文件，每次修改代码后都要为每一个修改过的文件重新编译那是很麻烦的。从事计算机行业的人大都不喜欢麻烦。Makefile此时带来了“自动化编译”的好处(本初使用GNU">
 <meta name="keywords" content="linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="linux 函数记录">
-<meta property="og:url" content="http://www.wuweinan.top/2017/04/18/linux-C函数记录/index.html">
+<meta property="og:title" content="Makefile">
+<meta property="og:url" content="http://www.wuweinan.top/2017/06/08/Makefile/index.html">
 <meta property="og:site_name" content="wwNan's blog">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。">
-<meta property="og:updated_time" content="2017-05-07T13:29:26.826Z">
+<meta property="og:description" content="Makefile的重要性&amp;emsp;&amp;emsp;Windows下编程的大佬们请忽略这篇短文，因为Windows的IDE像一名体贴细致的英式管家为程序员完成了Makefile的工作。如果在UNIX下进行一个开发项目，一个工程中有不计其数的源文件，每次修改代码后都要为每一个修改过的文件重新编译那是很麻烦的。从事计算机行业的人大都不喜欢麻烦。Makefile此时带来了“自动化编译”的好处(本初使用GNU">
+<meta property="og:updated_time" content="2017-06-08T05:10:17.553Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="linux 函数记录">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。">
+<meta name="twitter:title" content="Makefile">
+<meta name="twitter:description" content="Makefile的重要性&amp;emsp;&amp;emsp;Windows下编程的大佬们请忽略这篇短文，因为Windows的IDE像一名体贴细致的英式管家为程序员完成了Makefile的工作。如果在UNIX下进行一个开发项目，一个工程中有不计其数的源文件，每次修改代码后都要为每一个修改过的文件重新编译那是很麻烦的。从事计算机行业的人大都不喜欢麻烦。Makefile此时带来了“自动化编译”的好处(本初使用GNU">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://www.wuweinan.top/2017/04/18/linux-C函数记录/"/>
+  <link rel="canonical" href="http://www.wuweinan.top/2017/06/08/Makefile/"/>
 
 
 
 
 
-  <title> linux 函数记录 | wwNan's blog </title>
+  <title> Makefile | wwNan's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -260,7 +260,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.wuweinan.top/2017/04/18/linux-C函数记录/">
+    <link itemprop="mainEntityOfPage" href="http://www.wuweinan.top/2017/06/08/Makefile/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Weinan Wu">
@@ -281,7 +281,7 @@
             
             
               
-                linux 函数记录
+                Makefile
               
             
           </h1>
@@ -296,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-18T12:43:35+08:00">
-                2017-04-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-08T11:26:12+08:00">
+                2017-06-08
               </time>
             
 
@@ -332,53 +332,7 @@
       
 
       
-        <p>&emsp;&emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。<br><a id="more"></a></p>
-<h2 id="不带缓存的文件I-O类"><a href="#不带缓存的文件I-O类" class="headerlink" title="不带缓存的文件I/O类"></a>不带缓存的文件I/O类</h2><p>&emsp;&emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里记录的主要是不带缓存的open、read等I/O函数,每一个都调用一个系统调用。linux以”int 80”进入系统调用，根据eax的值，即调用号在一个单位偏移量为4字节的系统调用表中寻找是哪个系统调用，如eax=0时是sys_exit。ebx,ecx,edx,esi,edi,ebp六个寄存器用来传递参数，在进入内核态时，会把六个寄存器的值依次入栈，一方面把寄存器空出来，另一方面系统调用函数可以直接在栈上取参数。</p>
-<ol>
-<li><p><strong>int  open(const char* pathname, in oflag, //mode_t mode);</strong><br>#include “sys/types.h”<br>#include “sys/stat.h”<br>#include “fcntl.h”<br>//文件名，O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_APPEND，创建文件时使用第三参数<br>//打开、创建文件，返回文件描述符</p>
-</li>
-<li><p><strong>int  close(int fd);</strong><br>#include “unistd.h”<br>//关闭文件</p>
-</li>
-<li><p><strong>off_t  lseek(int fd, off_t offset, int whence);</strong><br>#include “sys/types.h”<br>#include “unistd.h”<br>//fd, 偏移, SEEK_SET(文件头) | SEEK_CUR(当前) | SEEK_END(末尾)<br>//设置文件位移量，偏移量大于文件长度时，下一次写会延长该文件</p>
-</li>
-<li><p><strong>ssize_t  read(int fd, void *buff, size_t nbytes);</strong><br>#include “unistd.h”<br>//返回读到的字节数，文件末尾为0，出错-1</p>
-</li>
-<li><p><strong>ssize_t  write(int fd, const void *buff, size_t nbytes);</strong><br>#include “unistd.h”<br>//正常返回写入字节数，出错-1</p>
-</li>
-<li><p><strong>int  dup(int fd);</strong><br><strong>int  dup2(int fd, int fd2)</strong><br>#include “unistd.h”<br>//返回当前可用文件描述符的最小值<br>//用fd2指定新的描述符数值</p>
-</li>
-<li><p><strong>int  fcntl(int fd, int cmd, //int arg);</strong><br>#include “sys/types.h”<br>#include “unistd.h”<br>#include “fcntl.h”<br>返回值需要和O_ACCMODE等进行 &amp; 操作 获得结果</p>
-<blockquote>
-<p>cmd=F_DUPFD 复制显存的描述符<br>cmd=F_GETFD|F_SETFD 获得/设置文件描述符标记<br>cmd=F_GETFL|F_SETFL 获得/设置文件状态标志<br>cmd=F_GETOWN|F_SETOWN 获得/设置异步I/O权<br>cmd=F_GETLK|F_SETLK/F_SETKW 获得/设置记录锁</p>
-</blockquote>
-</li>
-<li><p><strong>int  ioctl(int fd, int request,…);</strong><br>#include “unistd.h”<br>#include “sys/ioctl.h”<br>//可用于文件I/O，磁带I/O，套接口I/O，终端I/O。对设备进行操作最容易的方法。</p>
-</li>
-</ol>
-<p>读/写磁盘文件时，以上函数都带有缓存机制。</p>
-<h2 id="文件和目录"><a href="#文件和目录" class="headerlink" title="文件和目录"></a>文件和目录</h2><ol>
-<li><p><strong>int  stat(const char<em> pathname， struct stat</em> buf);</strong><br>#include “sys/types.h”<br>#include “sys/stat.h”<br>//对于给定的一个pathname，stat函数返回和此命名文件有关的信息结构，ls -l 使用stat最多</p>
-</li>
-<li><p><strong>int  fstat(const char<em> pathname， struct stat</em> buf);</strong><br>#include “sys/types.h”<br>#include “sys/stat.h”<br>//在文件描述符fd上，fstat函数返回和此命名文件有关的信息结构</p>
-</li>
-<li><p><strong>int  lstat(const char<em> pathname， struct stat</em> buf);</strong><br>#include “sys/types.h”<br>#include “sys/stat.h”<br>//lstat函数返回和此命名文件有关的信息结构，还可以返回符号链接的有关信息<br>//信息结构如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">struct stat&#123;</div><div class="line">	mode_t	st_mode;	//file type &amp; mode (permisions)</div><div class="line">	ino_t	st_ino;		//i-node number</div><div class="line">	dev_t	st_dev;		//device number</div><div class="line">	dev_t 	st_rdev;	//device number for special files</div><div class="line">	nlink_t	st_nlink;	//number of links</div><div class="line">	uid_t	st_uid;		</div><div class="line">	gid_t	st_gid;</div><div class="line">	off_t	st_size;	//size in bytes, for regular files</div><div class="line">	time_t	st_atime;	//time of last access</div><div class="line">	time_t	st_mtime;	//last modification</div><div class="line">	time_t	st_ctime;	//last file status change</div><div class="line">	long 	st_blksize;	//best I/O block size</div><div class="line">	long	st_blocks;	//number of 512b blocks allocated</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p><strong>#define S_ISDIR (mode) (((mode) &amp; S_IFMT) == S_IFDIR)</strong><br>//可以使用宏 S_ISREG(), S_ISDIR(), S_ISCHR(), S_ISFIFO()等确定文件类型，宏定义如上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">lstat(pathname, &amp;buf);</div><div class="line">if (S_ISREG(buf.st_mode)) </div><div class="line">	printf(&quot;regular&quot;\n);</div></pre></td></tr></table></figure>
-</li>
-<li><p><strong>int  access(const char* pathname, int mode);</strong><br>#include”unistd.h”<br>//按实际的uid和gid进行存取许可测试,mode如下<br>// R_OK 读许可<br>// W_OK 写许可<br>// X_OK 执行许可<br>// F_OK 文件是否存在</p>
-</li>
-<li><p><strong>mode_t  umask(mode_t mask);</strong><br>#include”sys/types.h”<br>#include”sys/stat.h”<br>//为进程设置文件方式创建屏蔽字，返回以前的值。相关的是9个存取许可位，S_IRUSE,S_IRGRP,S_IROTH等</p>
-</li>
-<li><p><strong>int  chmod(const char* pathname, mode_t mode);</strong><br>#include”sys/types.h”<br>#include”sys/stat.h”<br>//对指定文件，改变文件的许可权位<br>//int fchmod(int fd, mode_t mode)针对已打开的文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">#include&lt;head.h&gt;</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	struct sttat statbuf;</div><div class="line">	if (stat(&quot;pathname&quot;, &amp;statbuf) &lt; 0)</div><div class="line">		error(&quot;stat error&quot;);</div><div class="line">	if (chmod(&quot;pathname&quot;, (statbuf.st_mode &amp; ~S_IXUSR) | S_ISGID) &lt; 0)</div><div class="line">		error(&quot;chmod error&quot;)</div><div class="line">	exit(0);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p><strong>int  chown(const char* pathname, uid_t owner, gid_t group);</strong><br><strong>int  lchown(const char* pathname, uid_t owner, gid_t group);</strong><br><strong>int  fchown(const char* pathname, uid_t owner, gid_t group);</strong><br>#include “unistd.h”<br>#include “sys/types.h”<br>//不同的系统对于修改文件拥有者限制不同，用户修改文件所有者的话可以拜托磁盘空间限额对他们的限制<br>//若为符号连接则改变符号连接的所有权，不更改指向文件所有权</p>
-</li>
-<li><p><strong>int truncate(const char* pathname, off_t length);</strong><br><strong>int ftruncate(int fd, off_t length);</strong><br>#include “sys/types.h”<br>#include “unistd.h”<br>//用于文件截断 O_TRUNC 可以把文件的长度截短为0<br>//如果length大于以前文件长度，后果与操作系统有关。</p>
-</li>
-</ol>
+        <h2 id="Makefile的重要性"><a href="#Makefile的重要性" class="headerlink" title="Makefile的重要性"></a>Makefile的重要性</h2><p>&emsp;&emsp;Windows下编程的大佬们请忽略这篇短文，因为Windows的IDE像一名体贴细致的英式管家为程序员完成了Makefile的工作。如果在UNIX下进行一个开发项目，一个工程中有不计其数的源文件，每次修改代码后都要为每一个修改过的文件重新编译那是很麻烦的。从事计算机行业的人大都不喜欢麻烦。Makefile此时带来了“自动化编译”的好处(本初使用GNU项目组的make)。使用Makefile定义整个工程的编译规则，写好之后一个简单的make [all, clean, run…]命令就可以完成整个工程的编译。<br>&emsp;&emsp;大三上学期的PA实验中，老师为我们写好了完整的Makefile文件让我们在实验中可以轻松的完成对代码的编译运行，而当时看到Makefile的内容后简直是一头雾水。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"># 作为示例省略了很多部分，并不详细和可用</div><div class="line">.PHONY: nemu entry all_testcase kernel run gdb test submit clean</div><div class="line"></div><div class="line">CC := gcc</div><div class="line">LD := ld</div><div class="line">CFLAGS := -MMD -Wall -Werror -c</div><div class="line"></div><div class="line">LIB_COMMON_DIR := lib-common</div><div class="line">NEWLIBC_DIR := $(LIB_COMMON_DIR)/newlib</div><div class="line">NEWLIBC := $(NEWLIBC_DIR)/libc.a</div><div class="line"></div><div class="line">nemu: $(nemu_BIN)</div><div class="line">all_testcase: $(testcase_BIN)</div><div class="line">kernel: $(kernel_BIN)</div><div class="line">game: $(game_BIN)</div><div class="line"></div><div class="line">clean-nemu:</div><div class="line">	-rm -rf obj/nemu 2&gt; /dev/null</div><div class="line"></div><div class="line">clean-kernel:</div><div class="line">	-rm -rf obj/kernel 2&gt; /dev/null</div><div class="line"></div><div class="line">clean: clean-cpp</div><div class="line">	-rm -rf obj 2&gt; /dev/null</div><div class="line">	-rm -f *log.txt entry $(FLOAT) 2&gt; /dev/null</div><div class="line"></div><div class="line">USERPROG := obj/testcase/mov</div><div class="line">ENTRY := $(USERPROG)</div><div class="line"></div><div class="line">entry: $(ENTRY)</div><div class="line">	objcopy -S -O binary $(ENTRY) entry</div><div class="line"></div><div class="line">run: $(nemu_BIN) $(USERPROG) entry</div><div class="line">	$(call git_commit, &quot;run&quot;)</div><div class="line">	$(nemu_BIN) $(USERPROG)</div><div class="line"></div><div class="line">test: $(nemu_BIN) $(testcase_BIN) entry</div><div class="line">	bash test.sh $(testcase_BIN)</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -421,18 +375,14 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/18/SQL-lab-writeup-POST篇/" rel="next" title="SQL-lab writeup POST篇">
-                <i class="fa fa-chevron-left"></i> SQL-lab writeup POST篇
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/11/pwnable-kr学习pwn-虽然是从零开始/" rel="prev" title="pwnable.kr学习pwn--虽然是从零开始">
-                pwnable.kr学习pwn--虽然是从零开始 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/03/制作含启动扇区和loader的软盘/" rel="prev" title="制作含引导扇区和loader的软盘">
+                制作含引导扇区和loader的软盘 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -587,7 +537,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#不带缓存的文件I-O类"><span class="nav-number">1.</span> <span class="nav-text">不带缓存的文件I/O类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件和目录"><span class="nav-number">2.</span> <span class="nav-text">文件和目录</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Makefile的重要性"><span class="nav-number">1.</span> <span class="nav-text">Makefile的重要性</span></a></li></ol></div>
             
 
           </div>
