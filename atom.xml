@@ -251,12 +251,12 @@
     <link href="http://www.wuweinan.top/2017/04/18/linux-C%E5%87%BD%E6%95%B0%E8%AE%B0%E5%BD%95/"/>
     <id>http://www.wuweinan.top/2017/04/18/linux-C函数记录/</id>
     <published>2017-04-18T04:43:35.000Z</published>
-    <updated>2017-05-07T13:29:26.826Z</updated>
+    <updated>2017-06-18T15:07:43.536Z</updated>
     
     <content type="html"><![CDATA[<p>&emsp;&emsp;以防把学过的函数忘了，或者遇到新的函数而过两天又忘了，在这里备忘以及统计新学的函数。主要针对apue和unix环境下的编程。<br><a id="more"></a></p>
 <h2 id="不带缓存的文件I-O类"><a href="#不带缓存的文件I-O类" class="headerlink" title="不带缓存的文件I/O类"></a>不带缓存的文件I/O类</h2><p>&emsp;&emsp;为什么是不带缓存呢？因为C语言下从FILE结构体定义的文件流和相关函数fread、fwrite等，到实际调用ReadFile等API，需要经过增加缓冲区保护、缓冲、换行符的转换等复杂的过程。所以在这里记录的主要是不带缓存的open、read等I/O函数,每一个都调用一个系统调用。linux以”int 80”进入系统调用，根据eax的值，即调用号在一个单位偏移量为4字节的系统调用表中寻找是哪个系统调用，如eax=0时是sys_exit。ebx,ecx,edx,esi,edi,ebp六个寄存器用来传递参数，在进入内核态时，会把六个寄存器的值依次入栈，一方面把寄存器空出来，另一方面系统调用函数可以直接在栈上取参数。</p>
 <ol>
-<li><p><strong>int  open(const char* pathname, in oflag, //mode_t mode);</strong><br>#include “sys/types.h”<br>#include “sys/stat.h”<br>#include “fcntl.h”<br>//文件名，O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_APPEND，创建文件时使用第三参数<br>//打开、创建文件，返回文件描述符</p>
+<li><p><strong>int  open(const char* pathname, int flag, //mode_t mode);</strong><br>#include “sys/types.h”<br>#include “sys/stat.h”<br>#include “fcntl.h”<br>//文件名，O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_APPEND，创建文件时使用第三参数<br>//打开、创建文件，返回文件描述符</p>
 </li>
 <li><p><strong>int  close(int fd);</strong><br>#include “unistd.h”<br>//关闭文件</p>
 </li>
